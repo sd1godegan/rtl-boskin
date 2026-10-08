@@ -175,7 +175,7 @@ const RTL_DATA = deepFreeze({
             pj: "Ardika Riski Rahmawan, S.Pd.",
             output: "RKT dan RKAS 2027 tersusun.",
             bukti: "dokumen/tatakelola/bukti-workshop-perencanaan.pdf",
-            produk: "dokumen/tatakelola/produk-rkt-rkas-2027.pdf"
+            produk: "dokumen/tatakelola/produk-draft-rkt-2027.pdf"
           }
         ]
       },
