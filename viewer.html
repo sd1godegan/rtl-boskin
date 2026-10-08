@@ -10,6 +10,47 @@
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
+  /* ============================================================
+     FIX ANTI-GARIS — hilangkan border/outline/scrollbar tak diinginkan
+     ============================================================ */
+
+  /* Reset total button & link */
+  button, a {
+    border: 0 !important;
+    outline: 0 !important;
+    background-clip: padding-box;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+  }
+  button:focus, a:focus,
+  button:active, a:active {
+    outline: 0 !important;
+    border: 0 !important;
+  }
+  button:focus-visible, a:focus-visible {
+    outline: 2px solid var(--accent) !important;
+    outline-offset: 3px;
+    border-radius: 9px;
+  }
+
+  /* Scrollbar dihilangkan dari semua elemen */
+  *::-webkit-scrollbar {
+    width: 0 !important;
+    height: 0 !important;
+    display: none !important;
+    background: transparent !important;
+  }
+  html {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  /* ============================================================
+     VARIABEL
+     ============================================================ */
   :root {
     --accent: #2563eb;
     --accent-soft: #dbeafe;
@@ -31,9 +72,9 @@
     color: var(--text);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    overflow: hidden;
+    overflow: hidden !important;
   }
-  body[data-tab="rtl"] { overflow-y: auto; user-select: auto; }
+  body[data-tab="rtl"] { overflow-y: auto !important; user-select: auto; }
 
   /* ===== HEADER ===== */
   header {
@@ -49,11 +90,17 @@
     z-index: 40;
     transition: opacity 0.35s, transform 0.35s;
     box-shadow: 0 2px 10px -6px rgba(15,23,42,0.12);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    will-change: transform, opacity;
+    isolation: isolate;
   }
   header.hidden {
     opacity: 0;
     transform: translateY(-100%);
     pointer-events: none;
+    border-bottom-color: transparent !important;
+    box-shadow: none !important;
   }
 
   .header-left { display: flex; align-items: center; gap: 14px; min-width: 0; flex: 1; }
@@ -108,7 +155,6 @@
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    border: none;
     cursor: pointer;
     font-family: inherit;
     white-space: nowrap;
@@ -143,11 +189,17 @@
     padding: 0 20px;
     z-index: 35;
     transition: opacity 0.35s, transform 0.35s;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    will-change: transform, opacity;
+    isolation: isolate;
   }
   .tabs.hidden {
     opacity: 0;
     transform: translateY(-100%);
     pointer-events: none;
+    border-bottom-color: transparent !important;
+    box-shadow: none !important;
   }
 
   .tab {
@@ -158,7 +210,6 @@
     font-weight: 700;
     color: var(--muted);
     background: transparent;
-    border: none;
     padding: 8px 16px;
     border-radius: 9px;
     cursor: pointer;
@@ -190,7 +241,7 @@
     align-items: center;
     justify-content: center;
     overflow: hidden;
-    transition: padding-top 0.2s;
+    transition: padding-top 0.2s, background 0.2s;
   }
   canvas {
     max-width: 100%;
@@ -200,9 +251,18 @@
     background: #fff;
     border-radius: 3px;
     transition: border-radius 0.2s;
+    border: 0 !important;
+    outline: 0 !important;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
   }
 
-  /* Fullscreen: hilangkan padding & UI */
+  /* Fullscreen state */
+  body.is-fullscreen {
+    background: #000 !important;
+  }
   body.is-fullscreen #stage {
     padding-top: 0;
     background: #000;
@@ -224,8 +284,8 @@
     width: 14vw;
     max-width: 130px;
     min-width: 70px;
-    background: transparent;
-    border: none;
+    background: transparent !important;
+    background-image: none !important;
     cursor: pointer;
     z-index: 20;
     display: flex;
@@ -235,30 +295,22 @@
     font-size: 48px;
     font-weight: 300;
     line-height: 1;
-    transition: opacity 0.35s, color 0.25s, background 0.25s, top 0.2s;
-    -webkit-tap-highlight-color: transparent;
+    transition: opacity 0.35s, color 0.25s, top 0.2s;
+    overflow: hidden;
+    isolation: isolate;
   }
+  .nav-btn::before,
+  .nav-btn::after { display: none !important; }
+
   body.is-fullscreen .nav-btn {
     top: 0;
-    color: rgba(255,255,255,0.6);
+    color: rgba(255,255,255,0.55);
     text-shadow: 0 2px 12px rgba(0,0,0,0.6);
   }
   .nav-btn.prev { left: 0; }
   .nav-btn.next { right: 0; }
   .nav-btn:hover:not(:disabled) { color: var(--accent); }
   body.is-fullscreen .nav-btn:hover:not(:disabled) { color: #fff; }
-  .nav-btn.prev:hover:not(:disabled) {
-    background: linear-gradient(to right, rgba(37,99,235,0.08), transparent);
-  }
-  .nav-btn.next:hover:not(:disabled) {
-    background: linear-gradient(to left, rgba(37,99,235,0.08), transparent);
-  }
-  body.is-fullscreen .nav-btn.prev:hover:not(:disabled) {
-    background: linear-gradient(to right, rgba(255,255,255,0.1), transparent);
-  }
-  body.is-fullscreen .nav-btn.next:hover:not(:disabled) {
-    background: linear-gradient(to left, rgba(255,255,255,0.1), transparent);
-  }
   .nav-btn:disabled { opacity: 0.15; cursor: default; }
 
   /* Auto-hide UI */
@@ -267,6 +319,7 @@
   body.ui-hidden header { opacity: 0; transform: translateY(-100%); pointer-events: none; }
   body.ui-hidden .tabs { opacity: 0; transform: translateY(-100%); pointer-events: none; }
 
+  /* Page indicator */
   #page-indicator {
     position: fixed;
     bottom: 22px;
@@ -279,7 +332,7 @@
     font-size: 12.5px;
     font-weight: 700;
     z-index: 30;
-    transition: opacity 0.35s, background 0.3s, color 0.3s;
+    transition: opacity 0.35s, background 0.3s, color 0.3s, border-color 0.3s;
     border: 1px solid var(--line);
     box-shadow: 0 4px 14px -6px rgba(15,23,42,0.15);
   }
@@ -289,6 +342,7 @@
     border-color: rgba(255,255,255,0.2);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
+    box-shadow: none;
   }
   #page-indicator .sep { color: var(--muted); margin: 0 4px; font-weight: 500; }
   body.is-fullscreen #page-indicator .sep { color: rgba(255,255,255,0.5); }
@@ -846,7 +900,7 @@
   }
 
   /* ============================================================
-     AUTO-HIDE UI — BERFUNGSI DI NORMAL & FULLSCREEN
+     AUTO-HIDE UI
      ============================================================ */
   function showUI() {
     if (currentTab !== 'slide') return;
@@ -854,7 +908,6 @@
     header.classList.remove('hidden');
     tabs.classList.remove('hidden');
     clearTimeout(hideTimer);
-    // Delay lebih pendek di fullscreen (2s), normal 3s
     const delay = document.fullscreenElement ? 2000 : 3000;
     hideTimer = setTimeout(hideUI, delay);
   }
@@ -876,9 +929,7 @@
     if (!document.fullscreenElement) {
       const el = document.documentElement;
       const fn = el.requestFullscreen || el.webkitRequestFullscreen || el.msRequestFullscreen;
-      if (fn) {
-        fn.call(el).catch(err => console.warn('Fullscreen gagal:', err));
-      }
+      if (fn) fn.call(el).catch(err => console.warn('Fullscreen gagal:', err));
     } else {
       const fn = document.exitFullscreen || document.webkitExitFullscreen || document.msExitFullscreen;
       if (fn) fn.call(document);
@@ -892,7 +943,6 @@
     document.body.classList.toggle('is-fullscreen', isFs);
     fsBtn.classList.toggle('active', isFs);
 
-    // Ganti ikon
     if (isFs) {
       fsIcon.innerHTML = `
         <path d="M8 3v3a2 2 0 0 1-2 2H3"/>
@@ -900,7 +950,6 @@
         <path d="M3 16h3a2 2 0 0 1 2 2v3"/>
         <path d="M16 21v-3a2 2 0 0 1 2-2h3"/>`;
       fsBtn.querySelector('.label').textContent = 'Keluar';
-      // Auto-hide UI setelah 2 detik di fullscreen
       clearTimeout(hideTimer);
       hideTimer = setTimeout(hideUI, 2000);
     } else {
@@ -910,7 +959,6 @@
         <path d="M3 16v3a2 2 0 0 0 2 2h3"/>
         <path d="M16 21h3a2 2 0 0 0 2-2v-3"/>`;
       fsBtn.querySelector('.label').textContent = 'Layar Penuh';
-      // Munculkan UI saat keluar fullscreen
       document.body.classList.remove('ui-hidden');
       header.classList.remove('hidden');
       tabs.classList.remove('hidden');
@@ -918,7 +966,6 @@
       hideTimer = setTimeout(hideUI, 3000);
     }
 
-    // Re-render PDF agar pas ukuran baru
     setTimeout(() => { if (pdfDoc) renderPage(pageNum); }, 120);
   }
 
@@ -958,7 +1005,6 @@
       const isMobile = window.innerWidth < 700;
       const isFs = document.body.classList.contains('is-fullscreen');
 
-      // Di fullscreen: tanpa padding, tanpa header/tabs
       const padding = isFs ? 0 : (isMobile ? 14 : 36);
       const headerH = isFs ? 0 : (isMobile ? 54 : 58);
       const tabsH   = isFs ? 0 : (isMobile ? 48 : 52);
@@ -1003,7 +1049,6 @@
     if (e.key === 'ArrowLeft'  || e.key === 'PageUp')   goPrev();
     if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') goNext();
     if (e.key === 'f' || e.key === 'F') toggleFullscreen();
-    // Esc ditangani browser untuk keluar fullscreen
   });
 
   /* ============================================================
