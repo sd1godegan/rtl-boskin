@@ -121,7 +121,6 @@
     pointer-events: none;
   }
 
-  /* Tombol fullscreen — khusus slide */
   #fs-btn { display: none; }
   body[data-tab="slide"] #fs-btn { display: inline-flex; }
   #fs-btn.active {
@@ -191,6 +190,7 @@
     align-items: center;
     justify-content: center;
     overflow: hidden;
+    transition: padding-top 0.2s;
   }
   canvas {
     max-width: 100%;
@@ -199,14 +199,24 @@
     box-shadow: 0 6px 28px rgba(15,23,42,0.18);
     background: #fff;
     border-radius: 3px;
+    transition: border-radius 0.2s;
   }
 
-  /* Saat fullscreen, header & tabs tersembunyi otomatis */
-  body.is-fullscreen #stage { padding-top: 0; }
+  /* Fullscreen: hilangkan padding & UI */
+  body.is-fullscreen #stage {
+    padding-top: 0;
+    background: #000;
+  }
+  body.is-fullscreen canvas {
+    border-radius: 0;
+    box-shadow: none;
+  }
   body.is-fullscreen header,
-  body.is-fullscreen .tabs { display: none; }
-  body.is-fullscreen #page-indicator { bottom: 24px; }
+  body.is-fullscreen .tabs {
+    display: none;
+  }
 
+  /* Nav buttons */
   .nav-btn {
     position: fixed;
     top: calc(var(--header-h) + var(--tabs-h));
@@ -225,23 +235,37 @@
     font-size: 48px;
     font-weight: 300;
     line-height: 1;
-    transition: opacity 0.35s, color 0.25s, background 0.25s, top 0.35s;
+    transition: opacity 0.35s, color 0.25s, background 0.25s, top 0.2s;
     -webkit-tap-highlight-color: transparent;
   }
-  body.is-fullscreen .nav-btn { top: 0; }
+  body.is-fullscreen .nav-btn {
+    top: 0;
+    color: rgba(255,255,255,0.6);
+    text-shadow: 0 2px 12px rgba(0,0,0,0.6);
+  }
   .nav-btn.prev { left: 0; }
   .nav-btn.next { right: 0; }
   .nav-btn:hover:not(:disabled) { color: var(--accent); }
+  body.is-fullscreen .nav-btn:hover:not(:disabled) { color: #fff; }
   .nav-btn.prev:hover:not(:disabled) {
     background: linear-gradient(to right, rgba(37,99,235,0.08), transparent);
   }
   .nav-btn.next:hover:not(:disabled) {
     background: linear-gradient(to left, rgba(37,99,235,0.08), transparent);
   }
+  body.is-fullscreen .nav-btn.prev:hover:not(:disabled) {
+    background: linear-gradient(to right, rgba(255,255,255,0.1), transparent);
+  }
+  body.is-fullscreen .nav-btn.next:hover:not(:disabled) {
+    background: linear-gradient(to left, rgba(255,255,255,0.1), transparent);
+  }
   .nav-btn:disabled { opacity: 0.15; cursor: default; }
 
+  /* Auto-hide UI */
   body.ui-hidden .nav-btn { opacity: 0; pointer-events: none; }
   body.ui-hidden #page-indicator { opacity: 0; pointer-events: none; }
+  body.ui-hidden header { opacity: 0; transform: translateY(-100%); pointer-events: none; }
+  body.ui-hidden .tabs { opacity: 0; transform: translateY(-100%); pointer-events: none; }
 
   #page-indicator {
     position: fixed;
@@ -255,11 +279,19 @@
     font-size: 12.5px;
     font-weight: 700;
     z-index: 30;
-    transition: opacity 0.35s, bottom 0.35s;
+    transition: opacity 0.35s, background 0.3s, color 0.3s;
     border: 1px solid var(--line);
     box-shadow: 0 4px 14px -6px rgba(15,23,42,0.15);
   }
+  body.is-fullscreen #page-indicator {
+    background: rgba(255,255,255,0.15);
+    color: #fff;
+    border-color: rgba(255,255,255,0.2);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
   #page-indicator .sep { color: var(--muted); margin: 0 4px; font-weight: 500; }
+  body.is-fullscreen #page-indicator .sep { color: rgba(255,255,255,0.5); }
 
   #loading, #error {
     position: absolute;
@@ -270,6 +302,9 @@
     font-weight: 500;
   }
   #error { color: #dc2626; }
+  body.is-fullscreen #loading,
+  body.is-fullscreen #error { color: #fff; }
+
   .spinner {
     width: 34px; height: 34px;
     border: 3px solid #cbd5e1;
@@ -287,15 +322,9 @@
     padding: calc(var(--header-h) + var(--tabs-h) + 28px) 24px 60px;
     min-height: 100vh;
   }
-  .rtl-wrap {
-    max-width: 1100px;
-    margin: 0 auto;
-  }
+  .rtl-wrap { max-width: 1100px; margin: 0 auto; }
 
-  .rtl-page-head {
-    text-align: center;
-    margin-bottom: 30px;
-  }
+  .rtl-page-head { text-align: center; margin-bottom: 30px; }
   .rtl-page-head h2 {
     font-size: clamp(22px, 3vh, 28px);
     font-weight: 800;
@@ -639,9 +668,11 @@
   const rtlTitle   = document.getElementById('rtl-title');
   const rtlSubtitle= document.getElementById('rtl-subtitle');
   const fsBtn      = document.getElementById('fs-btn');
+  const fsIcon     = document.getElementById('fs-icon');
 
   let pdfDoc = null, pageNum = 1, rendering = false, pendingPage = null;
   let currentTab = 'slide';
+  let hideTimer = null;
 
   if (!data) {
     loading.style.display = 'none';
@@ -815,25 +846,26 @@
   }
 
   /* ============================================================
-     AUTO-HIDE UI (hanya di slide, tidak saat fullscreen)
+     AUTO-HIDE UI — BERFUNGSI DI NORMAL & FULLSCREEN
      ============================================================ */
-  let hideTimer;
   function showUI() {
     if (currentTab !== 'slide') return;
-    if (document.fullscreenElement) return;
     document.body.classList.remove('ui-hidden');
     header.classList.remove('hidden');
     tabs.classList.remove('hidden');
     clearTimeout(hideTimer);
-    hideTimer = setTimeout(hideUI, 3000);
+    // Delay lebih pendek di fullscreen (2s), normal 3s
+    const delay = document.fullscreenElement ? 2000 : 3000;
+    hideTimer = setTimeout(hideUI, delay);
   }
+
   function hideUI() {
     if (currentTab !== 'slide') return;
-    if (document.fullscreenElement) return;
     document.body.classList.add('ui-hidden');
     header.classList.add('hidden');
     tabs.classList.add('hidden');
   }
+
   ['mousemove','mousedown','touchstart','keydown','scroll','wheel']
     .forEach(ev => document.addEventListener(ev, showUI, { passive: true }));
 
@@ -843,46 +875,51 @@
   function toggleFullscreen() {
     if (!document.fullscreenElement) {
       const el = document.documentElement;
-      (el.requestFullscreen || el.webkitRequestFullscreen || el.msRequestFullscreen)
-        ?.call(el).catch(err => console.warn('Fullscreen gagal:', err));
+      const fn = el.requestFullscreen || el.webkitRequestFullscreen || el.msRequestFullscreen;
+      if (fn) {
+        fn.call(el).catch(err => console.warn('Fullscreen gagal:', err));
+      }
     } else {
-      (document.exitFullscreen || document.webkitExitFullscreen || document.msExitFullscreen)
-        ?.call(document);
+      const fn = document.exitFullscreen || document.webkitExitFullscreen || document.msExitFullscreen;
+      if (fn) fn.call(document);
     }
   }
 
   fsBtn.addEventListener('click', toggleFullscreen);
 
-  // Update UI saat masuk/keluar fullscreen
   function onFsChange() {
-    const isFs = !!document.fullscreenElement;
+    const isFs = !!(document.fullscreenElement || document.webkitFullscreenElement || document.msFullscreenElement);
     document.body.classList.toggle('is-fullscreen', isFs);
     fsBtn.classList.toggle('active', isFs);
 
     // Ganti ikon
-    const icon = document.getElementById('fs-icon');
     if (isFs) {
-      icon.innerHTML = `
+      fsIcon.innerHTML = `
         <path d="M8 3v3a2 2 0 0 1-2 2H3"/>
         <path d="M21 8h-3a2 2 0 0 1-2-2V3"/>
         <path d="M3 16h3a2 2 0 0 1 2 2v3"/>
         <path d="M16 21v-3a2 2 0 0 1 2-2h3"/>`;
-      // Sembunyikan UI saat masuk fullscreen, tapi tetap bisa muncul saat gerak
+      fsBtn.querySelector('.label').textContent = 'Keluar';
+      // Auto-hide UI setelah 2 detik di fullscreen
       clearTimeout(hideTimer);
-      hideTimer = setTimeout(hideUI, 2500);
+      hideTimer = setTimeout(hideUI, 2000);
     } else {
-      icon.innerHTML = `
+      fsIcon.innerHTML = `
         <path d="M8 3H5a2 2 0 0 0-2 2v3"/>
         <path d="M21 8V5a2 2 0 0 0-2-2h-3"/>
         <path d="M3 16v3a2 2 0 0 0 2 2h3"/>
         <path d="M16 21h3a2 2 0 0 0 2-2v-3"/>`;
-      // Munculkan UI kembali
+      fsBtn.querySelector('.label').textContent = 'Layar Penuh';
+      // Munculkan UI saat keluar fullscreen
       document.body.classList.remove('ui-hidden');
       header.classList.remove('hidden');
       tabs.classList.remove('hidden');
+      clearTimeout(hideTimer);
+      hideTimer = setTimeout(hideUI, 3000);
     }
-    // Re-render PDF agar pas ukuran layar baru
-    setTimeout(() => { if (pdfDoc) renderPage(pageNum); }, 100);
+
+    // Re-render PDF agar pas ukuran baru
+    setTimeout(() => { if (pdfDoc) renderPage(pageNum); }, 120);
   }
 
   document.addEventListener('fullscreenchange', onFsChange);
@@ -919,9 +956,10 @@
       const base = page.getViewport({ scale: 1 });
 
       const isMobile = window.innerWidth < 700;
-      const isFs = !!document.fullscreenElement;
+      const isFs = document.body.classList.contains('is-fullscreen');
 
-      const padding = isMobile ? 14 : 36;
+      // Di fullscreen: tanpa padding, tanpa header/tabs
+      const padding = isFs ? 0 : (isMobile ? 14 : 36);
       const headerH = isFs ? 0 : (isMobile ? 54 : 58);
       const tabsH   = isFs ? 0 : (isMobile ? 48 : 52);
 
@@ -965,9 +1003,7 @@
     if (e.key === 'ArrowLeft'  || e.key === 'PageUp')   goPrev();
     if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') goNext();
     if (e.key === 'f' || e.key === 'F') toggleFullscreen();
-    if (e.key === 'Escape' && document.fullscreenElement) {
-      // Biarkan browser menangani exit fullscreen
-    }
+    // Esc ditangani browser untuk keluar fullscreen
   });
 
   /* ============================================================
