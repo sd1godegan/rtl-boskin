@@ -8,388 +8,617 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+/* ============================================================
+   CASCADE LAYERS
+   Urutan menentukan prioritas. Layer belakangan menang.
+   ============================================================ */
+@layer reset, tokens, base, layout, components, motion;
 
-  :root {
-    --bg: #f1f5f9;
-    --card: #ffffff;
-    --text: #0f172a;
-    --muted: #64748b;
-    --line: #e2e8f0;
+/* ============================================================
+   RESET — modern, minimal
+   ============================================================ */
+@layer reset {
+  *, *::before, *::after { box-sizing: border-box; }
+  * { margin: 0; }
 
-    --blue: #2563eb;
-    --purple: #7c3aed;
-    --amber: #ea580c;
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    scrollbar-gutter: stable;
   }
-
-  html, body { height: 100%; overflow: hidden; }
 
   body {
-    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    background: var(--bg);
-    color: var(--text);
+    min-block-size: 100dvh;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    line-height: 1.5;
+    text-rendering: optimizeLegibility;
+  }
+
+  img, svg { display: block; max-inline-size: 100%; }
+
+  button, input, textarea, select { font: inherit; color: inherit; }
+
+  a { color: inherit; text-decoration: none; }
+
+  :where(h1, h2, h3, h4) {
+    line-height: 1.15;
+    text-wrap: balance;
+  }
+
+  :where(p) { text-wrap: pretty; }
+}
+
+/* ============================================================
+   DESIGN TOKENS
+   ============================================================ */
+@layer tokens {
+  :root {
+    /* --- Color palette (raw values, only used to build semantics) --- */
+    --blue-600: #2563eb;
+    --purple-600: #7c3aed;
+    --amber-600: #ea580c;
+
+    /* --- Surfaces --- */
+    --surface: #ffffff;
+    --surface-page: #f8fafc;
+    --surface-soft: #f1f5f9;
+
+    /* --- Text --- */
+    --text: #0b1220;
+    --text-muted: #64748b;
+    --text-on-accent: #ffffff;
+
+    /* --- Borders & dividers --- */
+    --border: #e2e8f0;
+    --border-subtle: #eef2f7;
+
+    /* --- Spacing scale (0.25rem base) --- */
+    --space-1: 0.25rem;
+    --space-2: 0.5rem;
+    --space-3: 0.75rem;
+    --space-4: 1rem;
+    --space-5: 1.25rem;
+    --space-6: 1.5rem;
+    --space-8: 2rem;
+    --space-10: 2.5rem;
+
+    /* --- Radius --- */
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 20px;
+    --radius-pill: 999px;
+
+    /* --- Shadows (soft, layered) --- */
+    --shadow-1: 0 1px 2px rgb(15 23 42 / 0.03);
+    --shadow-2: 0 4px 16px -8px rgb(15 23 42 / 0.08);
+    --shadow-3: 0 20px 40px -16px rgb(15 23 42 / 0.15);
+
+    /* --- Motion --- */
+    --ease-out: cubic-bezier(.2, .8, .2, 1);
+    --duration-fast: 180ms;
+    --duration-normal: 320ms;
+    --duration-slow: 500ms;
+
+    /* --- Font --- */
+    --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont,
+                 'Segoe UI', Roboto, sans-serif;
+
+    /* --- Fluid type scale (based on vh for vertical fit) --- */
+    --text-xs:  clamp(10px,   1.1vh, 11.5px);
+    --text-sm:  clamp(11.5px, 1.35vh, 13px);
+    --text-md:  clamp(12.5px, 1.5vh, 14px);
+    --text-lg:  clamp(15px,   1.9vh, 17px);
+    --text-xl:  clamp(22px,   3.4vh, 32px);
+    --text-2xl: clamp(24px,   3.8vh, 38px);
+
+    /* --- Layout --- */
+    --content-max: 1160px;
+    --header-max: 900px;
+
+    /* --- Chrome heights (referenced by nested components) --- */
+    --pad-inline: clamp(20px, 3vw, 40px);
+    --pad-block:  clamp(16px, 2.4vh, 30px);
+  }
+}
+
+/* ============================================================
+   BASE
+   ============================================================ */
+@layer base {
+  body {
+    font-family: var(--font-sans);
+    background-color: var(--surface-page);
+    color: var(--text);
     display: flex;
     flex-direction: column;
+    overflow: hidden;
   }
 
-  /* ===== HEADER ===== */
-  header {
+  /* Ambient background — soft, single source of truth */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(ellipse 55% 40% at 10% 0%,   color-mix(in oklab, var(--blue-600)   8%, transparent), transparent 60%),
+      radial-gradient(ellipse 50% 40% at 90% 100%, color-mix(in oklab, var(--purple-600) 7%, transparent), transparent 60%),
+      radial-gradient(ellipse 40% 30% at 50% 50%,  color-mix(in oklab, var(--amber-600)  4%, transparent), transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  ::selection {
+    background-color: color-mix(in oklab, var(--blue-600) 25%, transparent);
+    color: var(--text);
+  }
+}
+
+/* ============================================================
+   LAYOUT
+   ============================================================ */
+@layer layout {
+  .page {
     position: relative;
-    z-index: 2;
-    text-align: center;
-    padding: clamp(28px, 4vh, 44px) 24px clamp(10px, 1.4vh, 16px);
-    flex-shrink: 0;
-    animation: fadeDown 0.6s ease both;
-  }
-  @keyframes fadeDown {
-    from { opacity: 0; transform: translateY(-10px); }
-    to   { opacity: 1; transform: translateY(0); }
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    block-size: 100dvh;
+    overflow: hidden;
   }
 
-  .badge {
-    display: inline-block;
-    background: #dbeafe;
-    color: #1d4ed8;
-    font-size: clamp(10px, 1vh, 11px);
+  .masthead {
+    flex-shrink: 0;
+    text-align: center;
+    padding-block: clamp(24px, 3.6vh, 40px) clamp(10px, 1.4vh, 16px);
+    padding-inline: var(--space-6);
+  }
+
+  .masthead__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    background: var(--surface);
+    color: color-mix(in oklab, var(--blue-600) 90%, black);
+    font-size: var(--text-xs);
     font-weight: 700;
     padding: 6px 14px;
-    border-radius: 999px;
-    margin-bottom: clamp(14px, 1.8vh, 18px);
-    letter-spacing: 0.5px;
+    border-radius: var(--radius-pill);
+    margin-block-end: clamp(12px, 1.6vh, 16px);
+    letter-spacing: 0.6px;
     text-transform: uppercase;
+    border: 1px solid color-mix(in oklab, var(--blue-600) 15%, transparent);
+    box-shadow: var(--shadow-1);
   }
 
-  .school {
+  .masthead__badge::before {
+    content: "";
+    inline-size: 6px;
+    block-size: 6px;
+    background: #10b981;
+    border-radius: 50%;
+    box-shadow: 0 0 0 3px color-mix(in oklab, #10b981 20%, transparent);
+  }
+
+  .masthead__school {
     display: block;
-    font-size: clamp(11px, 1.2vh, 12.5px);
-    font-weight: 700;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--blue);
-    margin-bottom: clamp(8px, 1.2vh, 12px);
-  }
-
-  header h1 {
-    font-size: clamp(24px, 3.8vh, 38px);
+    font-size: var(--text-xs);
     font-weight: 800;
-    letter-spacing: -0.03em;
-    line-height: 1.15;
-    margin: 0 auto clamp(10px, 1.4vh, 14px);
-    max-width: 900px;
-    color: #0f172a;
+    letter-spacing: 3.5px;
+    text-transform: uppercase;
+    color: var(--blue-600);
+    margin-block-end: clamp(8px, 1.2vh, 12px);
   }
 
-  header .subtitle {
-    font-size: clamp(12px, 1.4vh, 14px);
-    color: var(--muted);
-    max-width: 700px;
-    margin: 0 auto;
+  .masthead__title {
+    font-size: var(--text-2xl);
+    font-weight: 800;
+    letter-spacing: -0.035em;
+    line-height: 1.1;
+    margin-inline: auto;
+    margin-block-end: clamp(10px, 1.4vh, 14px);
+    max-inline-size: var(--header-max);
+    color: var(--text);
+  }
+
+  .masthead__subtitle {
+    font-size: var(--text-md);
+    color: var(--text-muted);
+    max-inline-size: 660px;
+    margin-inline: auto;
     line-height: 1.6;
     font-weight: 500;
   }
 
-  /* ===== MAIN ===== */
-  main {
-    position: relative;
-    z-index: 2;
+  .topic-grid {
     flex: 1;
-    max-width: 1160px;
-    width: 100%;
-    margin: 0 auto;
-    padding: clamp(16px, 2.4vh, 30px) clamp(20px, 3vw, 40px);
+    max-inline-size: var(--content-max);
+    inline-size: 100%;
+    margin-inline: auto;
+    padding-block: var(--pad-block);
+    padding-inline: var(--pad-inline);
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     grid-auto-rows: min-content;
     align-content: center;
-    gap: clamp(16px, 2vw, 24px);
-    min-height: 0;
+    gap: clamp(16px, 1.8vw, 22px);
+    min-block-size: 0;
   }
 
-  /* ===== CARD ===== */
-  .card {
+  .colophon {
+    flex-shrink: 0;
+    text-align: center;
+    padding-block: clamp(12px, 1.8vh, 18px) clamp(16px, 2.2vh, 24px);
+    padding-inline: var(--space-6);
+    font-size: var(--text-xs);
+    color: var(--text-muted);
+    letter-spacing: 0.2px;
+    font-weight: 500;
+  }
+}
+
+/* ============================================================
+   COMPONENTS
+   ============================================================ */
+@layer components {
+  /* ---- Topic Card --------------------------------------------- */
+  .topic-card {
     position: relative;
-    background: var(--card);
-    border-radius: 18px;
-    padding: clamp(20px, 2.6vh, 26px) clamp(20px, 1.9vw, 26px) clamp(18px, 2.2vh, 22px);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-xl);
+    padding-block: clamp(22px, 2.8vh, 28px) clamp(20px, 2.4vh, 24px);
+    padding-inline: clamp(22px, 2vw, 26px);
     display: flex;
     flex-direction: column;
-    text-decoration: none;
-    color: inherit;
     overflow: hidden;
     isolation: isolate;
-    border: 1px solid var(--line);
-    box-shadow: 0 4px 16px -8px rgba(15,23,42,0.10);
-    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-    opacity: 0;
-    transform: translateY(18px);
-    animation: fadeUp 0.6s ease forwards;
-  }
-  .card:nth-child(1) { animation-delay: 0.08s; }
-  .card:nth-child(2) { animation-delay: 0.16s; }
-  .card:nth-child(3) { animation-delay: 0.24s; }
-  @keyframes fadeUp {
-    to { opacity: 1; transform: translateY(0); }
+
+    box-shadow: var(--shadow-1), var(--shadow-2);
+    transition:
+      transform        var(--duration-normal) var(--ease-out),
+      box-shadow       var(--duration-normal) var(--ease-out),
+      border-color     var(--duration-normal) var(--ease-out);
   }
 
-  .card::after {
+  /* Per-topic accent color — controlled by data-topic */
+  .topic-card[data-topic="digital"]    { --accent: var(--blue-600);   }
+  .topic-card[data-topic="governance"] { --accent: var(--purple-600); }
+  .topic-card[data-topic="literacy"]   { --accent: var(--amber-600);  }
+
+  /* Top border accent */
+  .topic-card::after {
     content: "";
     position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 5px;
-    background: var(--c1);
+    inset-block-start: 0;
+    inset-inline: 0;
+    block-size: 4px;
+    background: var(--accent);
+    transition: block-size var(--duration-normal) var(--ease-out);
+    z-index: 2;
   }
 
-  .card:hover {
-    transform: translateY(-6px);
-    border-color: var(--c1);
-    box-shadow: 0 16px 32px -14px rgba(15,23,42,0.18);
+  /* Ambient decorative circle — uses color-mix for softness */
+  .topic-card::before {
+    content: "";
+    position: absolute;
+    inset-block-start: -60px;
+    inset-inline-end: -60px;
+    inline-size: 160px;
+    block-size: 160px;
+    border-radius: 50%;
+    background: var(--accent);
+    opacity: 0.05;
+    transition:
+      transform var(--duration-slow) var(--ease-out),
+      opacity   var(--duration-normal) var(--ease-out);
+    z-index: 0;
+    pointer-events: none;
   }
 
-  /* ==== HEADER CARD ==== */
-  .card-top {
+  @media (hover: hover) {
+    .topic-card:hover {
+      transform: translateY(-6px);
+      border-color: color-mix(in oklab, var(--accent) 40%, var(--border));
+      box-shadow:
+        var(--shadow-1),
+        0 20px 40px -16px color-mix(in oklab, var(--accent) 35%, transparent);
+    }
+    .topic-card:hover::before {
+      transform: scale(1.4);
+      opacity: 0.08;
+    }
+    .topic-card:hover .topic-card__icon {
+      transform: scale(1.08) rotate(-5deg);
+    }
+    .topic-card:hover .topic-card__num {
+      opacity: 0.5;
+    }
+    .topic-card:hover .topic-card__cta svg {
+      transform: translateX(6px);
+    }
+  }
+
+  .topic-card:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 4px;
+    border-color: transparent;
+  }
+
+  /* -- Head (icon + number) -- */
+  .topic-card__head {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
-    margin-bottom: clamp(14px, 1.9vh, 18px);
+    margin-block-end: clamp(16px, 2vh, 20px);
     position: relative;
     z-index: 1;
   }
 
-  .card-icon {
-    width: clamp(46px, 5.6vh, 54px);
-    height: clamp(46px, 5.6vh, 54px);
-    border-radius: 13px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--c1);
+  .topic-card__icon {
+    inline-size: clamp(48px, 5.8vh, 56px);
+    block-size: clamp(48px, 5.8vh, 56px);
+    border-radius: 14px;
+    display: grid;
+    place-items: center;
+    background: var(--accent);
+    color: var(--text-on-accent);
     flex-shrink: 0;
-    color: #ffffff;
-    transition: transform 0.3s ease;
-  }
-  .card-icon svg {
-    width: 55%;
-    height: 55%;
-    display: block;
-  }
-  .card:hover .card-icon {
-    transform: scale(1.06) rotate(-4deg);
+    box-shadow: 0 8px 20px -8px var(--accent);
+    transition: transform var(--duration-normal) var(--ease-out);
   }
 
-  .card-number {
-    font-size: clamp(32px, 4.4vh, 42px);
+  .topic-card__icon svg {
+    inline-size: 55%;
+    block-size: 55%;
+  }
+
+  .topic-card__num {
+    font-size: clamp(32px, 4.4vh, 44px);
     font-weight: 800;
-    color: var(--c1);
-    opacity: 0.22;
-    letter-spacing: -0.05em;
+    color: var(--accent);
+    opacity: 0.15;
+    letter-spacing: -0.06em;
     line-height: 0.9;
-    transition: opacity 0.3s ease;
     user-select: none;
+    font-variant-numeric: tabular-nums;
+    transition: opacity var(--duration-normal) var(--ease-out);
   }
-  .card:hover .card-number { opacity: 0.6; }
 
-  /* ==== CARD BODY ==== */
-  .card h3 {
-    font-size: clamp(15.5px, 2vh, 17.5px);
+  /* -- Body -- */
+  .topic-card__title {
+    font-size: var(--text-lg);
     font-weight: 800;
-    margin-bottom: clamp(7px, 1vh, 10px);
-    letter-spacing: -0.015em;
+    letter-spacing: -0.02em;
     line-height: 1.3;
-    color: #0f172a;
+    color: var(--text);
+    margin-block-end: clamp(7px, 1vh, 10px);
     position: relative;
     z-index: 1;
   }
 
-  .card p {
-    font-size: clamp(12px, 1.45vh, 13px);
-    color: var(--muted);
+  .topic-card__desc {
+    font-size: var(--text-sm);
+    color: var(--text-muted);
     line-height: 1.6;
-    margin-bottom: clamp(14px, 1.9vh, 20px);
-    position: relative;
-    z-index: 1;
+    margin-block-end: clamp(16px, 2vh, 22px);
     flex: 1;
     font-weight: 500;
-  }
-
-  /* ==== CTA ==== */
-  .card-cta {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    font-size: clamp(12px, 1.4vh, 13px);
-    font-weight: 800;
-    color: var(--c1);
-    padding-top: clamp(12px, 1.6vh, 16px);
-    border-top: 1px solid var(--line);
-    flex-shrink: 0;
     position: relative;
     z-index: 1;
   }
-  .card-cta svg {
-    width: 15px;
-    height: 15px;
-    transition: transform 0.3s ease;
-  }
-  .card:hover .card-cta svg { transform: translateX(6px); }
 
-  /* Tema warna solid */
-  .card.digital    { --c1: var(--blue); }
-  .card.tatakelola { --c1: var(--purple); }
-  .card.litnum     { --c1: var(--amber); }
-
-  .card:focus-visible {
-    outline: 2px solid #2563eb;
-    outline-offset: 3px;
-  }
-
-  /* ===== FOOTER ===== */
-  footer {
-    position: relative;
-    z-index: 2;
-    text-align: center;
-    padding: clamp(12px, 1.8vh, 18px) 24px clamp(16px, 2.2vh, 24px);
-    font-size: clamp(10.5px, 1.15vh, 11.5px);
-    color: var(--muted);
-    line-height: 1.6;
+  /* -- Call to action -- */
+  .topic-card__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--text-sm);
+    font-weight: 800;
+    color: var(--accent);
+    padding-block-start: clamp(14px, 1.8vh, 18px);
+    border-block-start: 1px solid var(--border);
     flex-shrink: 0;
-    letter-spacing: 0.15px;
-    font-weight: 500;
-    border-top: 1px solid var(--line);
-    background: #ffffff;
-  }
-  footer .sep { display: inline-block; margin: 0 8px; color: #cbd5e1; }
-  footer strong { color: #0f172a; font-weight: 700; }
-
-  /* ===== TABLET ===== */
-  @media (max-width: 920px) and (min-width: 601px) {
-    main { gap: 14px; padding: 14px 20px; }
-    .card { padding: 18px 16px 16px; }
-    .card h3 { font-size: 14.5px; }
-    .card p { font-size: 11.5px; line-height: 1.5; }
-    .card-icon { width: 44px; height: 44px; }
-    .card-number { font-size: 32px; }
+    position: relative;
+    z-index: 1;
+    letter-spacing: 0.1px;
   }
 
-  /* ===== MOBILE ===== */
-  @media (max-width: 600px) {
-    html, body { height: auto; overflow-y: auto; overflow-x: hidden; }
-    body { min-height: 100vh; }
+  .topic-card__cta svg {
+    inline-size: 15px;
+    block-size: 15px;
+    transition: transform var(--duration-normal) var(--ease-out);
+  }
 
-    header { padding: 30px 22px 14px; }
-    header h1 { font-size: 23px; }
-    header .subtitle { font-size: 13px; }
+  /* ---- Colophon (footer) separator ---- */
+  .colophon__brand {
+    color: var(--text);
+    font-weight: 800;
+  }
 
-    main {
-      grid-template-columns: 1fr;
-      padding: 12px 18px 18px;
-      gap: 14px;
-      align-content: start;
-    }
-    .card { padding: 22px 22px 20px; }
-    .card-icon { width: 52px; height: 52px; }
-    .card h3 { font-size: 16.5px; }
-    .card p { font-size: 13px; }
-    .card-number { font-size: 36px; }
+  .colophon__sep {
+    display: inline-block;
+    margin-inline: var(--space-2);
+    color: color-mix(in oklab, var(--border) 80%, var(--text-muted));
+  }
+}
 
-    footer { padding: 14px 20px 24px; font-size: 11.5px; }
+/* ============================================================
+   MOTION — entry animations + reduced-motion
+   ============================================================ */
+@layer motion {
+  .masthead {
+    animation: fade-down var(--duration-slow) var(--ease-out) both;
+  }
+
+  .topic-card {
+    opacity: 0;
+    transform: translateY(18px);
+    animation: fade-up var(--duration-slow) var(--ease-out) forwards;
+  }
+  .topic-card:nth-child(1) { animation-delay: 80ms;  }
+  .topic-card:nth-child(2) { animation-delay: 160ms; }
+  .topic-card:nth-child(3) { animation-delay: 240ms; }
+
+  @keyframes fade-down {
+    from { opacity: 0; transform: translateY(-10px); }
+    to   { opacity: 1; transform: translateY(0);     }
+  }
+
+  @keyframes fade-up {
+    to { opacity: 1; transform: translateY(0); }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
   }
+}
+
+/* ============================================================
+   RESPONSIVE — tablet, mobile, small mobile
+   ============================================================ */
+@layer layout {
+  @media (max-width: 920px) and (min-width: 601px) {
+    .topic-grid { gap: var(--space-4); padding-block: var(--space-4); }
+    .topic-card { border-radius: var(--radius-lg); }
+    .topic-card__icon { inline-size: 44px; block-size: 44px; border-radius: var(--radius-md); }
+    .topic-card__num  { font-size: 32px; }
+  }
+
+  @media (max-width: 600px) {
+    html, body { block-size: auto; }
+    body { overflow-y: auto; overflow-x: hidden; min-block-size: 100dvh; }
+    .page { block-size: auto; min-block-size: 100dvh; overflow: visible; }
+
+    .masthead { padding-block: 28px 14px; padding-inline: 22px; }
+    .masthead__title { font-size: 23px; }
+    .masthead__subtitle { font-size: var(--text-md); }
+
+    .topic-grid {
+      grid-template-columns: 1fr;
+      padding: 12px 18px 18px;
+      gap: var(--space-4);
+      align-content: start;
+    }
+
+    .topic-card { border-radius: var(--radius-lg); padding: 22px; }
+    .topic-card__icon { inline-size: 52px; block-size: 52px; border-radius: 14px; }
+    .topic-card__num  { font-size: 38px; }
+
+    .colophon { padding-block: 14px 24px; }
+  }
+
+  @media (max-width: 380px) {
+    .topic-grid { padding-inline: 14px; }
+    .topic-card { padding: 18px; }
+  }
+
+  /* Prefer contrast for users with that setting */
+  @media (prefers-contrast: more) {
+    :root {
+      --text-muted: #475569;
+      --border: #cbd5e1;
+    }
+    .topic-card { border-width: 2px; }
+  }
+}
 </style>
 </head>
 <body>
 
-<header>
-  <div class="badge">Bimtek BOSP Kinerja Terbaik 2026</div>
+<div class="page">
 
-  <span class="school">SD Negeri 1 Godegan</span>
+  <header class="masthead">
+    <span class="masthead__badge">Bimtek BOSP Kinerja Terbaik 2026</span>
+    <p class="masthead__school">SD Negeri 1 Godegan</p>
+    <h1 class="masthead__title">Best Practice Rencana Tindak Lanjut</h1>
+    <p class="masthead__subtitle">
+      Tiga fokus utama penguatan pembelajaran dan tata kelola sekolah — disusun sebagai langkah nyata peningkatan mutu layanan pendidikan.
+    </p>
+  </header>
 
-  <h1>Best Practice Rencana Tindak Lanjut</h1>
+  <main class="topic-grid" aria-label="Topik Rencana Tindak Lanjut">
 
-  <p class="subtitle">
-    Tiga fokus utama penguatan pembelajaran dan tata kelola sekolah — disusun sebagai langkah nyata peningkatan mutu layanan pendidikan.
-  </p>
-</header>
-
-<main>
-
-  <!-- 01 DIGITALISASI -->
-  <a class="card digital" href="viewer.html?id=digitalisasi">
-    <div class="card-top">
-      <div class="card-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="2.5" y="4" width="19" height="13" rx="2"/>
-          <path d="M8 21h8"/>
-          <path d="M12 17v4"/>
-          <path d="M9 8.5 7 10.5l2 2"/>
-          <path d="M15 8.5l2 2-2 2"/>
-        </svg>
+    <a class="topic-card" data-topic="digital" href="viewer.html?id=digitalisasi">
+      <div class="topic-card__head">
+        <div class="topic-card__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2.5" y="4" width="19" height="13" rx="2"/>
+            <path d="M8 21h8"/>
+            <path d="M12 17v4"/>
+            <path d="M9 8.5 7 10.5l2 2"/>
+            <path d="M15 8.5l2 2-2 2"/>
+          </svg>
+        </div>
+        <span class="topic-card__num" aria-hidden="true">01</span>
       </div>
-      <span class="card-number">01</span>
-    </div>
-    <h3>Digitalisasi Pembelajaran</h3>
-    <p>Penguatan pembelajaran digital melalui MPI dan RPP berbasis TPACK untuk kelas yang lebih hidup, bermakna, dan relevan.</p>
-    <span class="card-cta">
-      Lihat Slide
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M5 12h14M13 5l7 7-7 7"/>
-      </svg>
-    </span>
-  </a>
-
-  <!-- 02 TATA KELOLA -->
-  <a class="card tatakelola" href="viewer.html?id=tatakelola">
-    <div class="card-top">
-      <div class="card-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M3 3v18h18"/>
-          <rect x="7" y="12" width="3" height="6" rx="0.8"/>
-          <rect x="12" y="8" width="3" height="10" rx="0.8"/>
-          <rect x="17" y="5" width="3" height="13" rx="0.8"/>
+      <h2 class="topic-card__title">Digitalisasi Pembelajaran</h2>
+      <p class="topic-card__desc">Penguatan pembelajaran digital melalui MPI dan RPP berbasis TPACK untuk kelas yang lebih hidup, bermakna, dan relevan.</p>
+      <span class="topic-card__cta">
+        Lihat Slide
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M5 12h14M13 5l7 7-7 7"/>
         </svg>
-      </div>
-      <span class="card-number">02</span>
-    </div>
-    <h3>Tata Kelola Sekolah (SPMI)</h3>
-    <p>Penguatan Sistem Penjaminan Mutu Pendidikan melalui perencanaan berbasis data, komunitas belajar, dan refleksi berkelanjutan.</p>
-    <span class="card-cta">
-      Lihat Slide
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M5 12h14M13 5l7 7-7 7"/>
-      </svg>
-    </span>
-  </a>
+      </span>
+    </a>
 
-  <!-- 03 LITERASI NUMERASI -->
-  <a class="card litnum" href="viewer.html?id=litnum">
-    <div class="card-top">
-      <div class="card-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M2.5 4.5H9a3.5 3.5 0 0 1 3.5 3.5v11.5a2.5 2.5 0 0 0-2.5-2.5H2.5z"/>
-          <path d="M21.5 4.5H15a3.5 3.5 0 0 0-3.5 3.5v11.5a2.5 2.5 0 0 1 2.5-2.5h7.5z"/>
+    <a class="topic-card" data-topic="governance" href="viewer.html?id=tatakelola">
+      <div class="topic-card__head">
+        <div class="topic-card__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 3v18h18"/>
+            <rect x="7" y="12" width="3" height="6" rx="0.8"/>
+            <rect x="12" y="8" width="3" height="10" rx="0.8"/>
+            <rect x="17" y="5" width="3" height="13" rx="0.8"/>
+          </svg>
+        </div>
+        <span class="topic-card__num" aria-hidden="true">02</span>
+      </div>
+      <h2 class="topic-card__title">Tata Kelola Sekolah (SPMI)</h2>
+      <p class="topic-card__desc">Penguatan Sistem Penjaminan Mutu Pendidikan melalui perencanaan berbasis data, komunitas belajar, dan refleksi berkelanjutan.</p>
+      <span class="topic-card__cta">
+        Lihat Slide
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M5 12h14M13 5l7 7-7 7"/>
         </svg>
+      </span>
+    </a>
+
+    <a class="topic-card" data-topic="literacy" href="viewer.html?id=litnum">
+      <div class="topic-card__head">
+        <div class="topic-card__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M2.5 4.5H9a3.5 3.5 0 0 1 3.5 3.5v11.5a2.5 2.5 0 0 0-2.5-2.5H2.5z"/>
+            <path d="M21.5 4.5H15a3.5 3.5 0 0 0-3.5 3.5v11.5a2.5 2.5 0 0 1 2.5-2.5h7.5z"/>
+          </svg>
+        </div>
+        <span class="topic-card__num" aria-hidden="true">03</span>
       </div>
-      <span class="card-number">03</span>
-    </div>
-    <h3>Literasi &amp; Numerasi</h3>
-    <p>Penguatan literasi dan numerasi berbasis data Rapor Pendidikan dan pembelajaran kokurikuler yang kontekstual.</p>
-    <span class="card-cta">
-      Lihat Slide
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M5 12h14M13 5l7 7-7 7"/>
-      </svg>
-    </span>
-  </a>
+      <h2 class="topic-card__title">Literasi &amp; Numerasi</h2>
+      <p class="topic-card__desc">Penguatan literasi dan numerasi berbasis data Rapor Pendidikan dan pembelajaran kokurikuler yang kontekstual.</p>
+      <span class="topic-card__cta">
+        Lihat Slide
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M5 12h14M13 5l7 7-7 7"/>
+        </svg>
+      </span>
+    </a>
 
-</main>
+  </main>
 
-<footer>
-  <strong>SD Negeri 1 Godegan</strong><span class="sep">·</span>Godegan, Trimurti, Srandakan, Bantul<span class="sep">·</span>&copy; 2026
-</footer>
+  <footer class="colophon">
+    <strong class="colophon__brand">SD Negeri 1 Godegan</strong>
+    <span class="colophon__sep">·</span>Godegan, Trimurti, Srandakan, Bantul
+    <span class="colophon__sep">·</span>&copy; 2026
+  </footer>
+
+</div>
 
 </body>
 </html>
