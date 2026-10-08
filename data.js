@@ -198,7 +198,7 @@ const RTL_DATA = deepFreeze({
             code: "b.",
             title: "Simulasi / Peer Teaching",
             detail: "Uji coba mengajar antarteman guru sebelum diterapkan di kelas.",
-            waktu: "24 September 2026",
+            waktu: "25 September 2026",
             sasaran: "Kepala Sekolah, Guru, dan Tendik",
             pj: "Diah Nurhidayati, S.Pd.",
             output: "Guru mendapatkan pengalaman sebelum menerapkan pembelajaran di kelas.",
