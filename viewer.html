@@ -3,36 +3,190 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Viewer Slide — SD Negeri 1 Godegan</title>
+<title>Viewer — SD Negeri 1 Godegan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
+    --accent: #2563eb;
+    --accent-soft: #dbeafe;
     --bg: #e2e8f0;
-    --header-bg: #ffffff;
+    --card: #ffffff;
     --text: #0f172a;
     --muted: #64748b;
     --line: #e2e8f0;
-    --blue: #2563eb;
-    --blue-soft: #dbeafe;
+    --soft: #f1f5f9;
+
+    --header-h: 58px;
+    --tabs-h: 52px;
   }
 
-  html, body { height: 100%; overflow: hidden; }
-
+  html, body { height: 100%; }
   body {
     font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     background: var(--bg);
     color: var(--text);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    user-select: none;
+    overflow: hidden;
+  }
+  body[data-tab="rtl"] { overflow-y: auto; user-select: auto; }
+
+  /* ===== HEADER ===== */
+  header {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: var(--header-h);
+    background: var(--card);
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    z-index: 40;
+    transition: opacity 0.35s, transform 0.35s;
+    box-shadow: 0 2px 10px -6px rgba(15,23,42,0.12);
+  }
+  header.hidden {
+    opacity: 0;
+    transform: translateY(-100%);
+    pointer-events: none;
   }
 
-  /* ==== STAGE (area PDF) ==== */
-  #stage {
+  .header-left { display: flex; align-items: center; gap: 14px; min-width: 0; flex: 1; }
+  .back-btn {
+    color: var(--text);
+    text-decoration: none;
+    font-size: 18px;
+    width: 36px; height: 36px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 9px;
+    background: var(--soft);
+    transition: background 0.2s, color 0.2s;
+    flex-shrink: 0;
+    font-weight: 700;
+  }
+  .back-btn:hover { background: var(--accent-soft); color: var(--accent); }
+
+  .brand { display: flex; align-items: center; gap: 12px; min-width: 0; flex: 1; }
+  .brand-mark {
+    width: 38px; height: 38px;
+    border-radius: 10px;
+    background: var(--accent);
+    color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800;
+    font-size: 13px;
+    letter-spacing: -0.5px;
+    flex-shrink: 0;
+    transition: background 0.3s;
+  }
+  .brand-text { min-width: 0; flex: 1; }
+  .brand-title {
+    font-size: 13.5px; font-weight: 800; color: var(--text);
+    line-height: 1.2; letter-spacing: -0.01em;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .brand-sub {
+    font-size: 11px; color: var(--muted); line-height: 1.3; margin-top: 2px;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 500;
+  }
+
+  .header-right { display: flex; gap: 8px; flex-shrink: 0; align-items: center; }
+  .header-btn {
+    color: var(--text);
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 8px 14px;
+    border-radius: 9px;
+    background: var(--soft);
+    transition: background 0.2s, color 0.2s, opacity 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    white-space: nowrap;
+  }
+  .header-btn:hover { background: var(--accent-soft); color: var(--accent); }
+  .header-btn svg { width: 14px; height: 14px; flex-shrink: 0; }
+  .header-btn.disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  /* Tombol fullscreen — khusus slide */
+  #fs-btn { display: none; }
+  body[data-tab="slide"] #fs-btn { display: inline-flex; }
+  #fs-btn.active {
+    background: var(--accent-soft);
+    color: var(--accent);
+  }
+
+  /* ===== TABS ===== */
+  .tabs {
+    position: fixed;
+    top: var(--header-h);
+    left: 0; right: 0;
+    height: var(--tabs-h);
+    background: var(--card);
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 0 20px;
+    z-index: 35;
+    transition: opacity 0.35s, transform 0.35s;
+  }
+  .tabs.hidden {
+    opacity: 0;
+    transform: translateY(-100%);
+    pointer-events: none;
+  }
+
+  .tab {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--muted);
+    background: transparent;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 9px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background 0.2s, color 0.2s;
+  }
+  .tab svg { width: 15px; height: 15px; }
+  .tab:hover { background: var(--soft); color: var(--text); }
+  .tab.active {
+    background: var(--accent-soft);
+    color: var(--accent);
+  }
+
+  /* ===== PANEL ===== */
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  /* ---- SLIDE PANEL ---- */
+  #panel-slide {
     position: fixed;
     inset: 0;
-    padding-top: 58px; /* ruang untuk header */
+    z-index: 5;
+  }
+  #stage {
+    position: absolute;
+    inset: 0;
+    padding-top: calc(var(--header-h) + var(--tabs-h));
     display: flex;
     align-items: center;
     justify-content: center;
@@ -43,139 +197,20 @@
     max-height: 100%;
     display: block;
     box-shadow: 0 6px 28px rgba(15,23,42,0.18);
-    background: #ffffff;
+    background: #fff;
     border-radius: 3px;
   }
 
-  /* ==== HEADER (auto-hide) ==== */
-  header {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    height: 58px;
-    background: var(--header-bg);
-    border-bottom: 1px solid var(--line);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 20px;
-    z-index: 30;
-    transition: opacity 0.35s ease, transform 0.35s ease;
-    box-shadow: 0 2px 10px -6px rgba(15,23,42,0.12);
-  }
-  header.hidden {
-    opacity: 0;
-    transform: translateY(-100%);
-    pointer-events: none;
-  }
+  /* Saat fullscreen, header & tabs tersembunyi otomatis */
+  body.is-fullscreen #stage { padding-top: 0; }
+  body.is-fullscreen header,
+  body.is-fullscreen .tabs { display: none; }
+  body.is-fullscreen #page-indicator { bottom: 24px; }
 
-  .header-left {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    min-width: 0;
-    flex: 1;
-  }
-
-  .back-btn {
-    color: var(--text);
-    text-decoration: none;
-    font-size: 18px;
-    width: 36px; height: 36px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 9px;
-    background: #f1f5f9;
-    transition: background 0.2s ease, color 0.2s ease;
-    flex-shrink: 0;
-    font-weight: 700;
-  }
-  .back-btn:hover {
-    background: var(--blue-soft);
-    color: var(--blue);
-  }
-
-  .brand {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    min-width: 0;
-    flex: 1;
-  }
-
-  .brand-mark {
-    width: 38px; height: 38px;
-    border-radius: 10px;
-    background: var(--blue);
-    color: #ffffff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 800;
-    font-size: 13px;
-    letter-spacing: -0.5px;
-    flex-shrink: 0;
-  }
-
-  .brand-text {
-    min-width: 0;
-    flex: 1;
-  }
-  .brand-title {
-    font-size: 13.5px;
-    font-weight: 800;
-    color: var(--text);
-    line-height: 1.2;
-    letter-spacing: -0.01em;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  .brand-sub {
-    font-size: 11px;
-    color: var(--muted);
-    line-height: 1.3;
-    margin-top: 2px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    font-weight: 500;
-  }
-
-  .header-right {
-    display: flex;
-    gap: 8px;
-    flex-shrink: 0;
-  }
-  .header-btn {
-    color: var(--text);
-    text-decoration: none;
-    font-size: 12px;
-    font-weight: 700;
-    padding: 8px 14px;
-    border-radius: 9px;
-    background: #f1f5f9;
-    transition: background 0.2s ease, color 0.2s ease;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    border: none;
-    cursor: pointer;
-    font-family: inherit;
-  }
-  .header-btn:hover {
-    background: var(--blue-soft);
-    color: var(--blue);
-  }
-  .header-btn svg {
-    width: 14px;
-    height: 14px;
-  }
-
-  /* ==== NAV BUTTONS (kiri/kanan, transparan, auto-hide) ==== */
   .nav-btn {
     position: fixed;
-    top: 58px; bottom: 0;
+    top: calc(var(--header-h) + var(--tabs-h));
+    bottom: 0;
     width: 14vw;
     max-width: 130px;
     min-width: 70px;
@@ -190,55 +225,42 @@
     font-size: 48px;
     font-weight: 300;
     line-height: 1;
-    transition: opacity 0.35s ease, color 0.25s ease, background 0.25s ease;
+    transition: opacity 0.35s, color 0.25s, background 0.25s, top 0.35s;
     -webkit-tap-highlight-color: transparent;
   }
+  body.is-fullscreen .nav-btn { top: 0; }
   .nav-btn.prev { left: 0; }
   .nav-btn.next { right: 0; }
-
-  .nav-btn:hover:not(:disabled) {
-    color: var(--blue);
-  }
+  .nav-btn:hover:not(:disabled) { color: var(--accent); }
   .nav-btn.prev:hover:not(:disabled) {
     background: linear-gradient(to right, rgba(37,99,235,0.08), transparent);
   }
   .nav-btn.next:hover:not(:disabled) {
     background: linear-gradient(to left, rgba(37,99,235,0.08), transparent);
   }
-  .nav-btn:disabled {
-    opacity: 0.15;
-    cursor: default;
-  }
+  .nav-btn:disabled { opacity: 0.15; cursor: default; }
 
-  /* Saat UI disembunyikan */
   body.ui-hidden .nav-btn { opacity: 0; pointer-events: none; }
   body.ui-hidden #page-indicator { opacity: 0; pointer-events: none; }
 
-  /* ==== PAGE INDICATOR ==== */
   #page-indicator {
     position: fixed;
     bottom: 22px;
     left: 50%;
     transform: translateX(-50%);
-    background: #ffffff;
+    background: var(--card);
     color: var(--text);
     padding: 8px 18px;
     border-radius: 999px;
     font-size: 12.5px;
     font-weight: 700;
-    letter-spacing: 0.3px;
     z-index: 30;
-    transition: opacity 0.35s ease;
+    transition: opacity 0.35s, bottom 0.35s;
     border: 1px solid var(--line);
     box-shadow: 0 4px 14px -6px rgba(15,23,42,0.15);
   }
-  #page-indicator .sep {
-    color: var(--muted);
-    margin: 0 4px;
-    font-weight: 500;
-  }
+  #page-indicator .sep { color: var(--muted); margin: 0 4px; font-weight: 500; }
 
-  /* ==== LOADING / ERROR ==== */
   #loading, #error {
     position: absolute;
     text-align: center;
@@ -248,32 +270,236 @@
     font-weight: 500;
   }
   #error { color: #dc2626; }
-
   .spinner {
     width: 34px; height: 34px;
     border: 3px solid #cbd5e1;
-    border-top-color: var(--blue);
+    border-top-color: var(--accent);
     border-radius: 50%;
     animation: spin 0.8s linear infinite;
     margin: 0 auto 14px;
   }
   @keyframes spin { to { transform: rotate(360deg); } }
 
-  /* ==== MOBILE ==== */
+  /* ---- RTL PANEL ---- */
+  #panel-rtl {
+    position: relative;
+    z-index: 5;
+    padding: calc(var(--header-h) + var(--tabs-h) + 28px) 24px 60px;
+    min-height: 100vh;
+  }
+  .rtl-wrap {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .rtl-page-head {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  .rtl-page-head h2 {
+    font-size: clamp(22px, 3vh, 28px);
+    font-weight: 800;
+    color: var(--text);
+    letter-spacing: -0.025em;
+    line-height: 1.2;
+    margin-bottom: 8px;
+  }
+  .rtl-page-head p {
+    font-size: 13.5px;
+    color: var(--muted);
+    line-height: 1.6;
+    max-width: 620px;
+    margin: 0 auto;
+    font-weight: 500;
+  }
+
+  .rtl-section {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 16px -10px rgba(15,23,42,0.12);
+  }
+
+  .rtl-section-head {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 18px 24px;
+    border-bottom: 1px solid var(--line);
+    background: var(--soft);
+  }
+  .rtl-section-num {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    background: var(--accent);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 15px;
+    flex-shrink: 0;
+  }
+  .rtl-section-title {
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--text);
+    letter-spacing: -0.01em;
+    line-height: 1.3;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .rtl-item {
+    padding: 22px 24px;
+    border-bottom: 1px solid var(--line);
+    transition: background 0.2s;
+  }
+  .rtl-item:last-child { border-bottom: none; }
+  .rtl-item:hover { background: #fafbfc; }
+
+  .rtl-item-head {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+  .rtl-item-code {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 32px;
+    height: 26px;
+    padding: 0 8px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    border-radius: 7px;
+    font-size: 12px;
+    font-weight: 800;
+    flex-shrink: 0;
+    letter-spacing: 0.3px;
+  }
+  .rtl-item-title {
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--text);
+    line-height: 1.35;
+    letter-spacing: -0.015em;
+    flex: 1;
+  }
+
+  .rtl-item-detail {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.65;
+    margin-bottom: 16px;
+    font-weight: 500;
+  }
+
+  .rtl-meta {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 14px 22px;
+    padding: 16px 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 16px;
+  }
+  .rtl-meta-item { min-width: 0; }
+  .rtl-meta-label {
+    font-size: 10.5px;
+    font-weight: 800;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+    margin-bottom: 4px;
+  }
+  .rtl-meta-value {
+    font-size: 13px;
+    color: var(--text);
+    font-weight: 600;
+    line-height: 1.5;
+    word-break: break-word;
+  }
+  .rtl-meta-value.muted { color: var(--muted); font-weight: 500; }
+
+  .rtl-files {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+  }
+  .rtl-files-label {
+    font-size: 11px;
+    font-weight: 800;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+    margin-right: 4px;
+  }
+
+  .file-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: var(--accent);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 8px 13px;
+    border-radius: 9px;
+    text-decoration: none;
+    transition: filter 0.2s, transform 0.15s;
+    letter-spacing: 0.1px;
+    box-shadow: 0 3px 8px -3px var(--accent);
+  }
+  .file-chip:hover { filter: brightness(0.92); }
+  .file-chip:active { transform: scale(0.97); }
+  .file-chip svg { width: 13px; height: 13px; flex-shrink: 0; }
+
+  .file-chip.disabled {
+    background: var(--soft);
+    color: #94a3b8;
+    cursor: not-allowed;
+    pointer-events: none;
+    box-shadow: none;
+    font-weight: 600;
+  }
+
+  /* ===== MOBILE ===== */
   @media (max-width: 600px) {
-    header { height: 54px; padding: 0 14px; }
-    #stage { padding-top: 54px; }
-    .nav-btn { top: 54px; font-size: 34px; width: 22vw; }
+    :root { --header-h: 54px; --tabs-h: 48px; }
+    header { padding: 0 14px; }
     .brand-mark { width: 34px; height: 34px; font-size: 12px; }
     .brand-title { font-size: 12.5px; }
     .brand-sub { font-size: 10px; }
     .header-btn { font-size: 11px; padding: 7px 10px; }
     .header-btn .label { display: none; }
+    .tab { font-size: 11.5px; padding: 7px 12px; gap: 6px; }
+    .tab svg { width: 14px; height: 14px; }
+    .nav-btn { font-size: 34px; width: 22vw; }
     #page-indicator { font-size: 11.5px; padding: 6px 14px; bottom: 16px; }
+
+    #panel-rtl { padding: calc(var(--header-h) + var(--tabs-h) + 18px) 14px 40px; }
+    .rtl-page-head { margin-bottom: 22px; }
+    .rtl-page-head h2 { font-size: 19px; }
+    .rtl-page-head p { font-size: 12.5px; }
+
+    .rtl-section-head { padding: 14px 16px; gap: 10px; }
+    .rtl-section-num { width: 32px; height: 32px; font-size: 13px; }
+    .rtl-section-title { font-size: 13.5px; }
+
+    .rtl-item { padding: 18px 16px; }
+    .rtl-item-title { font-size: 14px; }
+    .rtl-item-detail { font-size: 12.5px; margin-bottom: 14px; }
+    .rtl-meta { grid-template-columns: 1fr; gap: 12px; padding: 14px 0; }
+    .rtl-meta-value { font-size: 12.5px; }
   }
 </style>
 </head>
-<body>
+<body data-tab="slide">
 
 <header id="header">
   <div class="header-left">
@@ -287,41 +513,115 @@
     </div>
   </div>
   <div class="header-right">
-    <a id="download-link" href="#" download class="header-btn">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M12 3v12"/>
-        <path d="m7 10 5 5 5-5"/>
-        <path d="M5 21h14"/>
+    <button id="fs-btn" class="header-btn" title="Layar penuh (F)">
+      <svg id="fs-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M8 3H5a2 2 0 0 0-2 2v3"/>
+        <path d="M21 8V5a2 2 0 0 0-2-2h-3"/>
+        <path d="M3 16v3a2 2 0 0 0 2 2h3"/>
+        <path d="M16 21h3a2 2 0 0 0 2-2v-3"/>
       </svg>
-      <span class="label">Unduh</span>
+      <span class="label">Layar Penuh</span>
+    </button>
+    <a id="download-link" class="header-btn" href="#">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/>
+      </svg>
+      <span class="label" id="dl-label">Unduh</span>
     </a>
   </div>
 </header>
 
-<div id="stage">
-  <div id="loading">
-    <div class="spinner"></div>
-    Memuat slide…
+<nav class="tabs" id="tabs">
+  <button class="tab active" data-tab="slide">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="3" y="4" width="18" height="14" rx="2"/>
+      <path d="M8 21h8"/><path d="M12 18v3"/>
+    </svg>
+    Slide Presentasi
+  </button>
+  <button class="tab" data-tab="rtl">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="3" y="4" width="18" height="16" rx="2"/>
+      <path d="M3 10h18M9 10v10"/>
+    </svg>
+    Tabel RTL
+  </button>
+</nav>
+
+<!-- ============ PANEL: SLIDE ============ -->
+<section class="panel active" id="panel-slide">
+  <div id="stage">
+    <div id="loading"><div class="spinner"></div>Memuat slide…</div>
+    <canvas id="pdf-canvas" style="display:none;"></canvas>
+    <div id="error" style="display:none;"></div>
   </div>
-  <canvas id="pdf-canvas" style="display:none;"></canvas>
-  <div id="error" style="display:none;"></div>
-</div>
+  <button class="nav-btn prev" id="prev-btn" disabled aria-label="Sebelumnya">‹</button>
+  <button class="nav-btn next" id="next-btn" disabled aria-label="Berikutnya">›</button>
+  <div id="page-indicator">
+    <span id="page-current">–</span><span class="sep">/</span><span id="page-total">–</span>
+  </div>
+</section>
 
-<button class="nav-btn prev" id="prev-btn" disabled aria-label="Sebelumnya">‹</button>
-<button class="nav-btn next" id="next-btn" disabled aria-label="Berikutnya">›</button>
+<!-- ============ PANEL: RTL ============ -->
+<section class="panel" id="panel-rtl">
+  <div class="rtl-wrap">
+    <div class="rtl-page-head">
+      <h2 id="rtl-title">Rencana Tindak Lanjut</h2>
+      <p id="rtl-subtitle">Struktur kegiatan RTL — klik tombol unduh di setiap item untuk mengakses produk pendukung.</p>
+    </div>
+    <div id="rtl-body"></div>
+  </div>
+</section>
 
-<div id="page-indicator">
-  <span id="page-current">–</span><span class="sep">/</span><span id="page-total">–</span>
-</div>
-
+<script src="data.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script>
   pdfjsLib.GlobalWorkerOptions.workerSrc =
     'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
-  const params = new URLSearchParams(location.search);
-  const file = params.get('file');
+  /* ============================================================
+     KONVERSI LINK DRIVE → TAUTAN UNDUHAN LANGSUNG
+     ============================================================ */
+  function toDirectDownloadUrl(url) {
+    if (!url || !url.trim()) return '';
+    const input = url.trim();
 
+    if (input.includes('uc?export=download')) return input;
+
+    let fileId = '';
+    let m = input.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
+    if (m) fileId = m[1];
+
+    if (!fileId) {
+      m = input.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+      if (m) fileId = m[1];
+    }
+
+    if (!fileId && /^[a-zA-Z0-9_-]{20,}$/.test(input)) fileId = input;
+    if (!fileId) return input;
+
+    return `https://drive.google.com/uc?export=download&id=${fileId}`;
+  }
+
+  /* ============================================================
+     RESOLVE DATA DARI URL
+     ============================================================ */
+  const params = new URLSearchParams(location.search);
+  const idParam   = params.get('id');
+  const fileParam = params.get('file');
+
+  let data = null;
+  if (idParam && RTL_DATA[idParam]) {
+    data = RTL_DATA[idParam];
+  } else if (fileParam) {
+    for (const k in RTL_DATA) {
+      if (RTL_DATA[k].slide === fileParam) { data = RTL_DATA[k]; break; }
+    }
+  }
+
+  /* ============================================================
+     ELEMEN
+     ============================================================ */
   const canvas     = document.getElementById('pdf-canvas');
   const ctx        = canvas.getContext('2d');
   const loading    = document.getElementById('loading');
@@ -332,52 +632,266 @@
   const nextBtn    = document.getElementById('next-btn');
   const fileNameEl = document.getElementById('file-name');
   const dlLink     = document.getElementById('download-link');
+  const dlLabel    = document.getElementById('dl-label');
   const header     = document.getElementById('header');
+  const tabs       = document.getElementById('tabs');
+  const rtlBody    = document.getElementById('rtl-body');
+  const rtlTitle   = document.getElementById('rtl-title');
+  const rtlSubtitle= document.getElementById('rtl-subtitle');
+  const fsBtn      = document.getElementById('fs-btn');
 
-  let pdfDoc = null;
-  let pageNum = 1;
-  let rendering = false;
-  let pendingPage = null;
+  let pdfDoc = null, pageNum = 1, rendering = false, pendingPage = null;
+  let currentTab = 'slide';
 
-  /* ==== AUTO-HIDE UI ==== */
-  let hideTimer;
-  const HIDE_DELAY = 3000;
-
-  function showUI() {
-    document.body.classList.remove('ui-hidden');
-    header.classList.remove('hidden');
-    clearTimeout(hideTimer);
-    hideTimer = setTimeout(hideUI, HIDE_DELAY);
-  }
-  function hideUI() {
-    document.body.classList.add('ui-hidden');
-    header.classList.add('hidden');
-  }
-
-  ['mousemove', 'mousedown', 'touchstart', 'keydown', 'scroll', 'wheel']
-    .forEach(ev => document.addEventListener(ev, showUI, { passive: true }));
-
-  /* ==== LOAD PDF ==== */
-  if (!file) {
+  if (!data) {
     loading.style.display = 'none';
     errorEl.style.display = 'block';
-    errorEl.textContent = 'Parameter file tidak ditemukan. Silakan kembali ke halaman utama.';
-    showUI();
+    errorEl.textContent = 'Data RTL tidak ditemukan. Kembali ke halaman utama.';
+    dlLink.classList.add('disabled');
   } else {
-    const cleanName = decodeURIComponent(file).split('/').pop();
-    // Bersihkan nama file untuk subtitle (buang .pdf, ganti - jadi spasi)
-    const prettyName = cleanName
-      .replace(/\.pdf$/i, '')
-      .replace(/[-_]/g, ' ')
-      .replace(/\b\w/g, c => c.toUpperCase());
+    document.documentElement.style.setProperty('--accent', data.accent);
+    document.documentElement.style.setProperty('--accent-soft', hexToSoft(data.accent));
 
-    fileNameEl.textContent = prettyName;
-    dlLink.href = file;
-    dlLink.setAttribute('download', cleanName);
-    loadPdf(file);
-    showUI();
+    fileNameEl.textContent = data.title;
+    rtlTitle.textContent = 'RTL — ' + data.title;
+    rtlSubtitle.textContent = data.subtitle;
+
+    renderRTL();
+    updateDownloadButton();
+    loadPdf(data.slide);
   }
 
+  function hexToSoft(hex) {
+    const h = hex.replace('#','');
+    const r = parseInt(h.substr(0,2),16);
+    const g = parseInt(h.substr(2,2),16);
+    const b = parseInt(h.substr(4,2),16);
+    const mix = (c) => Math.round(c * 0.12 + 255 * 0.88);
+    return `rgb(${mix(r)}, ${mix(g)}, ${mix(b)})`;
+  }
+
+  /* ============================================================
+     TOMBOL UNDUH KONTEKSTUAL
+     ============================================================ */
+  function updateDownloadButton() {
+    if (!data) return;
+
+    if (currentTab === 'slide') {
+      dlLink.classList.remove('disabled');
+      dlLink.href = data.slide;
+      dlLink.setAttribute('download', data.slide.split('/').pop());
+      dlLink.removeAttribute('target');
+      dlLabel.textContent = 'Unduh Slide';
+    } else {
+      if (data.rtl_doc && data.rtl_doc.trim()) {
+        dlLink.classList.remove('disabled');
+        dlLink.href = toDirectDownloadUrl(data.rtl_doc);
+        dlLink.setAttribute('target', '_blank');
+        dlLink.removeAttribute('download');
+        dlLabel.textContent = 'Unduh RTL';
+      } else {
+        dlLink.classList.add('disabled');
+        dlLink.href = '#';
+        dlLink.removeAttribute('target');
+        dlLink.removeAttribute('download');
+        dlLabel.textContent = 'RTL Belum Tersedia';
+      }
+    }
+  }
+
+  /* ============================================================
+     RENDER TABEL RTL
+     ============================================================ */
+  function renderRTL() {
+    rtlBody.innerHTML = data.sections.map(sec => {
+      const items = sec.items.map(it => renderItem(it)).join('');
+      return `
+        <div class="rtl-section">
+          <div class="rtl-section-head">
+            <div class="rtl-section-num">${sec.number}</div>
+            <div class="rtl-section-title">${esc(sec.title)}</div>
+          </div>
+          ${items}
+        </div>
+      `;
+    }).join('');
+  }
+
+  function renderItem(item) {
+    const codeHtml = item.code
+      ? `<span class="rtl-item-code">${esc(item.code)}</span>`
+      : '';
+
+    const filesHtml = (item.files || []).map(f => {
+      const ready = f.link && f.link.trim();
+      if (ready) {
+        const directUrl = toDirectDownloadUrl(f.link);
+        return `
+          <a class="file-chip" href="${esc(directUrl)}" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/>
+            </svg>
+            ${esc(f.label)}
+          </a>`;
+      }
+      return `
+        <span class="file-chip disabled">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/>
+          </svg>
+          ${esc(f.label)}
+        </span>`;
+    }).join('');
+
+    return `
+      <div class="rtl-item">
+        <div class="rtl-item-head">
+          ${codeHtml}
+          <div class="rtl-item-title">${esc(item.title)}</div>
+        </div>
+        <div class="rtl-item-detail">${esc(item.detail)}</div>
+
+        <div class="rtl-meta">
+          <div class="rtl-meta-item">
+            <div class="rtl-meta-label">Waktu Pelaksanaan</div>
+            <div class="rtl-meta-value muted">${esc(item.waktu)}</div>
+          </div>
+          <div class="rtl-meta-item">
+            <div class="rtl-meta-label">Sasaran</div>
+            <div class="rtl-meta-value muted">${esc(item.sasaran)}</div>
+          </div>
+          <div class="rtl-meta-item">
+            <div class="rtl-meta-label">Penanggung Jawab</div>
+            <div class="rtl-meta-value">${esc(item.pj)}</div>
+          </div>
+          <div class="rtl-meta-item">
+            <div class="rtl-meta-label">Output / Outcome</div>
+            <div class="rtl-meta-value">${esc(item.output)}</div>
+          </div>
+        </div>
+
+        <div class="rtl-files">
+          <span class="rtl-files-label">Unduh Produk:</span>
+          ${filesHtml}
+        </div>
+      </div>
+    `;
+  }
+
+  function esc(s) {
+    return String(s).replace(/[&<>"']/g, c => ({
+      '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+    }[c]));
+  }
+
+  /* ============================================================
+     TAB SWITCHING
+     ============================================================ */
+  document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', () => setTab(tab.dataset.tab));
+  });
+
+  function setTab(target) {
+    currentTab = target;
+    document.body.dataset.tab = target;
+    document.querySelectorAll('.tab').forEach(t => {
+      t.classList.toggle('active', t.dataset.tab === target);
+    });
+    document.querySelectorAll('.panel').forEach(p => {
+      p.classList.toggle('active', p.id === 'panel-' + target);
+    });
+
+    updateDownloadButton();
+
+    clearTimeout(hideTimer);
+    document.body.classList.remove('ui-hidden');
+    header.classList.remove('hidden');
+    tabs.classList.remove('hidden');
+
+    if (target === 'slide') {
+      hideTimer = setTimeout(hideUI, 3000);
+      setTimeout(() => { if (pdfDoc) renderPage(pageNum); }, 60);
+    }
+  }
+
+  /* ============================================================
+     AUTO-HIDE UI (hanya di slide, tidak saat fullscreen)
+     ============================================================ */
+  let hideTimer;
+  function showUI() {
+    if (currentTab !== 'slide') return;
+    if (document.fullscreenElement) return;
+    document.body.classList.remove('ui-hidden');
+    header.classList.remove('hidden');
+    tabs.classList.remove('hidden');
+    clearTimeout(hideTimer);
+    hideTimer = setTimeout(hideUI, 3000);
+  }
+  function hideUI() {
+    if (currentTab !== 'slide') return;
+    if (document.fullscreenElement) return;
+    document.body.classList.add('ui-hidden');
+    header.classList.add('hidden');
+    tabs.classList.add('hidden');
+  }
+  ['mousemove','mousedown','touchstart','keydown','scroll','wheel']
+    .forEach(ev => document.addEventListener(ev, showUI, { passive: true }));
+
+  /* ============================================================
+     FULLSCREEN
+     ============================================================ */
+  function toggleFullscreen() {
+    if (!document.fullscreenElement) {
+      const el = document.documentElement;
+      (el.requestFullscreen || el.webkitRequestFullscreen || el.msRequestFullscreen)
+        ?.call(el).catch(err => console.warn('Fullscreen gagal:', err));
+    } else {
+      (document.exitFullscreen || document.webkitExitFullscreen || document.msExitFullscreen)
+        ?.call(document);
+    }
+  }
+
+  fsBtn.addEventListener('click', toggleFullscreen);
+
+  // Update UI saat masuk/keluar fullscreen
+  function onFsChange() {
+    const isFs = !!document.fullscreenElement;
+    document.body.classList.toggle('is-fullscreen', isFs);
+    fsBtn.classList.toggle('active', isFs);
+
+    // Ganti ikon
+    const icon = document.getElementById('fs-icon');
+    if (isFs) {
+      icon.innerHTML = `
+        <path d="M8 3v3a2 2 0 0 1-2 2H3"/>
+        <path d="M21 8h-3a2 2 0 0 1-2-2V3"/>
+        <path d="M3 16h3a2 2 0 0 1 2 2v3"/>
+        <path d="M16 21v-3a2 2 0 0 1 2-2h3"/>`;
+      // Sembunyikan UI saat masuk fullscreen, tapi tetap bisa muncul saat gerak
+      clearTimeout(hideTimer);
+      hideTimer = setTimeout(hideUI, 2500);
+    } else {
+      icon.innerHTML = `
+        <path d="M8 3H5a2 2 0 0 0-2 2v3"/>
+        <path d="M21 8V5a2 2 0 0 0-2-2h-3"/>
+        <path d="M3 16v3a2 2 0 0 0 2 2h3"/>
+        <path d="M16 21h3a2 2 0 0 0 2-2v-3"/>`;
+      // Munculkan UI kembali
+      document.body.classList.remove('ui-hidden');
+      header.classList.remove('hidden');
+      tabs.classList.remove('hidden');
+    }
+    // Re-render PDF agar pas ukuran layar baru
+    setTimeout(() => { if (pdfDoc) renderPage(pageNum); }, 100);
+  }
+
+  document.addEventListener('fullscreenchange', onFsChange);
+  document.addEventListener('webkitfullscreenchange', onFsChange);
+  document.addEventListener('msfullscreenchange', onFsChange);
+
+  /* ============================================================
+     PDF LOADER
+     ============================================================ */
   async function loadPdf(url) {
     try {
       pdfDoc = await pdfjsLib.getDocument(url).promise;
@@ -387,26 +901,32 @@
       nextBtn.disabled = false;
       pageTot.textContent = pdfDoc.numPages;
       renderPage(pageNum);
+      showUI();
     } catch (err) {
       console.error(err);
       loading.style.display = 'none';
       errorEl.style.display = 'block';
-      errorEl.textContent = 'Gagal memuat PDF. Pastikan file tersedia di repositori.';
+      errorEl.textContent = 'Gagal memuat PDF. Pastikan file tersedia.';
     }
   }
 
-  /* ==== RENDER HALAMAN ==== */
   async function renderPage(num) {
+    if (!pdfDoc) return;
     if (rendering) { pendingPage = num; return; }
     rendering = true;
     try {
       const page = await pdfDoc.getPage(num);
       const base = page.getViewport({ scale: 1 });
 
-      const padding = window.innerWidth < 700 ? 14 : 36;
-      const headerH = window.innerWidth < 600 ? 54 : 58;
+      const isMobile = window.innerWidth < 700;
+      const isFs = !!document.fullscreenElement;
+
+      const padding = isMobile ? 14 : 36;
+      const headerH = isFs ? 0 : (isMobile ? 54 : 58);
+      const tabsH   = isFs ? 0 : (isMobile ? 48 : 52);
+
       const maxW = window.innerWidth  - padding * 2;
-      const maxH = window.innerHeight - padding * 2 - headerH;
+      const maxH = window.innerHeight - padding * 2 - headerH - tabsH;
 
       const scale = Math.min(maxW / base.width, maxH / base.height);
       const viewport = page.getViewport({ scale });
@@ -416,7 +936,6 @@
       canvas.height = Math.floor(viewport.height * dpr);
       canvas.style.width  = Math.floor(viewport.width)  + 'px';
       canvas.style.height = Math.floor(viewport.height) + 'px';
-
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       ctx.clearRect(0, 0, viewport.width, viewport.height);
 
@@ -425,9 +944,7 @@
       pageCur.textContent = num;
       prevBtn.disabled = num <= 1;
       nextBtn.disabled = num >= pdfDoc.numPages;
-    } catch (e) {
-      console.error(e);
-    }
+    } catch (e) { console.error(e); }
     rendering = false;
     if (pendingPage !== null) {
       const p = pendingPage; pendingPage = null;
@@ -435,44 +952,45 @@
     }
   }
 
-  /* ==== NAVIGASI ==== */
+  /* ============================================================
+     NAVIGASI
+     ============================================================ */
   function goPrev() { if (pdfDoc && pageNum > 1) { pageNum--; renderPage(pageNum); } }
   function goNext() { if (pdfDoc && pageNum < pdfDoc.numPages) { pageNum++; renderPage(pageNum); } }
-
   prevBtn.addEventListener('click', goPrev);
   nextBtn.addEventListener('click', goNext);
 
   document.addEventListener('keydown', (e) => {
+    if (currentTab !== 'slide') return;
     if (e.key === 'ArrowLeft'  || e.key === 'PageUp')   goPrev();
     if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') goNext();
     if (e.key === 'f' || e.key === 'F') toggleFullscreen();
-    if (e.key === 'Escape' && document.fullscreenElement) document.exitFullscreen();
+    if (e.key === 'Escape' && document.fullscreenElement) {
+      // Biarkan browser menangani exit fullscreen
+    }
   });
 
-  function toggleFullscreen() {
-    if (!document.fullscreenElement) {
-      document.documentElement.requestFullscreen?.().catch(() => {});
-    } else {
-      document.exitFullscreen?.();
-    }
-  }
-
-  /* ==== RESIZE ==== */
+  /* ============================================================
+     RESIZE & SWIPE
+     ============================================================ */
   let resizeTimer;
   window.addEventListener('resize', () => {
     clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(() => { if (pdfDoc) renderPage(pageNum); }, 200);
+    resizeTimer = setTimeout(() => {
+      if (pdfDoc && currentTab === 'slide') renderPage(pageNum);
+    }, 200);
   });
 
-  /* ==== SWIPE (HP) ==== */
-  let touchStartX = 0, touchStartY = 0;
-  document.addEventListener('touchstart', (e) => {
-    touchStartX = e.changedTouches[0].screenX;
-    touchStartY = e.changedTouches[0].screenY;
+  let tx=0, ty=0;
+  document.addEventListener('touchstart', e => {
+    if (currentTab !== 'slide') return;
+    tx = e.changedTouches[0].screenX;
+    ty = e.changedTouches[0].screenY;
   }, { passive: true });
-  document.addEventListener('touchend', (e) => {
-    const dx = e.changedTouches[0].screenX - touchStartX;
-    const dy = e.changedTouches[0].screenY - touchStartY;
+  document.addEventListener('touchend', e => {
+    if (currentTab !== 'slide') return;
+    const dx = e.changedTouches[0].screenX - tx;
+    const dy = e.changedTouches[0].screenY - ty;
     if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy)) {
       if (dx < 0) goNext(); else goPrev();
     }
