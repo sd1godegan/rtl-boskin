@@ -1,16 +1,19 @@
 /* =====================================================================
    DATA RTL — SD Negeri 1 Godegan
    ---------------------------------------------------------------------
-   Cara mengisi link Google Drive:
-     - Tempel link share biasa (contoh di bawah), TIDAK perlu ubah manual.
-     - Format yang didukung:
-         https://drive.google.com/file/d/FILE_ID/view?usp=sharing
-         https://drive.google.com/open?id=FILE_ID
-         https://drive.google.com/uc?id=FILE_ID
-         FILE_ID (hanya ID)
-     - Sistem akan otomatis mengubahnya menjadi tautan unduhan langsung.
-     - Kosongkan ("") → tombol jadi "Belum tersedia".
-     - Setelan Drive wajib: "Anyone with the link can view".
+   Semua file PDF disimpan di GitHub (folder dokumen/ dan slides/).
+
+   Isi bukti/produk dengan PATH RELATIF:
+     "dokumen/digitalisasi/bukti-sosialisasi.pdf"
+
+   Untuk link web (misal Portal MPI), isi URL lengkap:
+     "https://sd1godegan.github.io/mpi"
+
+   Viewer otomatis:
+     - Path .pdf → modal preview
+     - URL web  → buka tab baru
+
+   Kosongkan ("") kalau belum ada → tombol jadi "Belum tersedia".
    ===================================================================== */
 
 const RTL_DATA = {
@@ -21,7 +24,6 @@ const RTL_DATA = {
     subtitle: "Best Practice RTL Bimtek BOSP Kinerja Terbaik 2026 — SD Negeri 1 Godegan",
     accent: "#2563eb",
     slide: "slides/digitalisasi-pembelajaran.pdf",
-    rtl_doc: "",   // link dokumen RTL di Drive (Word/PDF)
     sections: [
       {
         number: "1",
@@ -35,10 +37,8 @@ const RTL_DATA = {
             sasaran: "Guru, Kepala Sekolah, dan Tenaga Kependidikan",
             pj: "Ardika Riski Rahmawan, S.Pd.",
             output: "Warga sekolah memahami materi bimtek dan memiliki gambaran yang sama tentang penerapan digitalisasi pembelajaran.",
-            files: [
-              { label: "Materi Bimtek", link: "" },
-              { label: "Foto Kegiatan", link: "" }
-            ]
+            bukti: "dokumen/digitalisasi/bukti-sosialisasi.pdf",
+            produk: ""
           }
         ]
       },
@@ -54,7 +54,8 @@ const RTL_DATA = {
             sasaran: "Guru",
             pj: "Ardika Riski Rahmawan, S.Pd.",
             output: "Menghasilkan media pembelajaran interaktif yang bisa langsung dipakai di kelas.",
-            files: [{ label: "Contoh MPI", link: "" }]
+            bukti: "dokumen/digitalisasi/bukti-workshop-mpi.pdf",
+            produk: "https://sd1godegan.github.io/mpi"
           },
           {
             code: "b.",
@@ -64,7 +65,8 @@ const RTL_DATA = {
             sasaran: "Guru",
             pj: "Ardika Riski Rahmawan, S.Pd.",
             output: "Tersusunnya RPP berbasis TPACK yang siap diterapkan.",
-            files: [{ label: "Template RPP", link: "" }]
+            bukti: "dokumen/digitalisasi/bukti-workshop-rpp.pdf",
+            produk: "dokumen/digitalisasi/produk-rpp-tpack.pdf"
           }
         ]
       },
@@ -80,7 +82,8 @@ const RTL_DATA = {
             sasaran: "Guru dan Peserta Didik",
             pj: "Jumaryati, S.Pd. & Nur Ika Sudaryani, S.Pd.",
             output: "Pembelajaran dengan MPI terlaksana dan terdokumentasi dengan baik.",
-            files: [{ label: "Dokumentasi Praktik", link: "" }]
+            bukti: "dokumen/digitalisasi/bukti-implementasi.pdf",
+            produk: ""
           }
         ]
       },
@@ -96,7 +99,8 @@ const RTL_DATA = {
             sasaran: "Guru, Kepala Sekolah, dan Tenaga Kependidikan",
             pj: "Jumaryati, S.Pd.",
             output: "Catatan refleksi, evaluasi, dan rencana perbaikan untuk penguatan digitalisasi pembelajaran.",
-            files: [{ label: "Notulen Refleksi", link: "" }]
+            bukti: "dokumen/digitalisasi/bukti-refleksi.pdf",
+            produk: ""
           }
         ]
       }
@@ -109,7 +113,6 @@ const RTL_DATA = {
     subtitle: "Best Practice RTL Bimtek BOSP Kinerja Terbaik 2026 — SD Negeri 1 Godegan",
     accent: "#7c3aed",
     slide: "slides/tata-kelola-spmi.pdf",
-    rtl_doc: "",
     sections: [
       {
         number: "1",
@@ -123,10 +126,8 @@ const RTL_DATA = {
             sasaran: "Kepala Sekolah, Guru, dan Tendik",
             pj: "Ardika Riski Rahmawan, S.Pd.",
             output: "Pemahaman warga sekolah tentang Sistem Penjaminan Mutu Pendidikan.",
-            files: [
-              { label: "Materi IHT SPMI", link: "" },
-              { label: "Daftar Hadir", link: "" }
-            ]
+            bukti: "dokumen/tatakelola/bukti-iht-spmi.pdf",
+            produk: ""
           }
         ]
       },
@@ -142,10 +143,8 @@ const RTL_DATA = {
             sasaran: "Kepala Sekolah, Guru, dan Tendik",
             pj: "Ardika Riski Rahmawan, S.Pd.",
             output: "RKT dan RKAS 2027 tersusun.",
-            files: [
-              { label: "Dokumen RKT 2027", link: "" },
-              { label: "Dokumen RKAS 2027", link: "" }
-            ]
+            bukti: "dokumen/tatakelola/bukti-workshop-perencanaan.pdf",
+            produk: "dokumen/tatakelola/produk-rkt-rkas-2027.pdf"
           }
         ]
       },
@@ -161,7 +160,8 @@ const RTL_DATA = {
             sasaran: "Kepala Sekolah, Guru, dan Tendik",
             pj: "Jumaryati, S.Pd.",
             output: "Tersusunnya rancangan kegiatan pembelajaran Geometri.",
-            files: [{ label: "Rancangan Pembelajaran", link: "" }]
+            bukti: "dokumen/tatakelola/bukti-diskusi-geometri.pdf",
+            produk: ""
           },
           {
             code: "b.",
@@ -171,7 +171,8 @@ const RTL_DATA = {
             sasaran: "Kepala Sekolah, Guru, dan Tendik",
             pj: "Diah Nurhidayati, S.Pd.",
             output: "Guru mendapatkan pengalaman sebelum menerapkan pembelajaran di kelas.",
-            files: [{ label: "Lembar Observasi", link: "" }]
+            bukti: "dokumen/tatakelola/bukti-peer-teaching.pdf",
+            produk: ""
           }
         ]
       },
@@ -187,7 +188,8 @@ const RTL_DATA = {
             sasaran: "Kepala Sekolah, Guru, dan Tendik",
             pj: "Jumaryati, S.Pd.",
             output: "Terjadi perbaikan pembelajaran secara berkelanjutan.",
-            files: [{ label: "Notulen Refleksi", link: "" }]
+            bukti: "dokumen/tatakelola/bukti-refleksi.pdf",
+            produk: ""
           }
         ]
       }
@@ -200,7 +202,6 @@ const RTL_DATA = {
     subtitle: "Best Practice RTL Bimtek BOSP Kinerja Terbaik 2026 — SD Negeri 1 Godegan",
     accent: "#ea580c",
     slide: "slides/literasi-numerasi.pdf",
-    rtl_doc: "",
     sections: [
       {
         number: "1",
@@ -214,10 +215,8 @@ const RTL_DATA = {
             sasaran: "Kepala Sekolah, seluruh Guru, dan Tendik",
             pj: "Wahyuningrum Pratiwi, S.Pd.",
             output: "Notulen diskusi dan foto kegiatan.",
-            files: [
-              { label: "Notulen Diskusi", link: "" },
-              { label: "Foto Kegiatan", link: "" }
-            ]
+            bukti: "dokumen/litnum/bukti-diskusi-rapor.pdf",
+            produk: ""
           }
         ]
       },
@@ -233,11 +232,8 @@ const RTL_DATA = {
             sasaran: "Seluruh Guru Kelas dan Guru Mapel",
             pj: "Wahyuningrum Pratiwi, S.Pd.",
             output: "LKPD, kisi-kisi soal L1–L3, dan modul pembelajaran.",
-            files: [
-              { label: "LKPD", link: "" },
-              { label: "Kisi-kisi Soal L1–L3", link: "" },
-              { label: "Modul Pembelajaran", link: "" }
-            ]
+            bukti: "dokumen/litnum/bukti-workshop-litnum.pdf",
+            produk: "dokumen/litnum/produk-lkpd-l1-l3.pdf"
           }
         ]
       },
@@ -253,10 +249,8 @@ const RTL_DATA = {
             sasaran: "Guru Model dan Murid",
             pj: "Guru Model",
             output: "Foto pembelajaran, lembar observasi, dan hasil murid.",
-            files: [
-              { label: "Lembar Observasi", link: "" },
-              { label: "Hasil Murid", link: "" }
-            ]
+            bukti: "dokumen/litnum/bukti-praktik-mengajar.pdf",
+            produk: ""
           }
         ]
       },
@@ -272,10 +266,8 @@ const RTL_DATA = {
             sasaran: "Kepala Sekolah dan seluruh Guru",
             pj: "Kepala Sekolah",
             output: "Notulen refleksi dan dokumen rencana lanjutan.",
-            files: [
-              { label: "Notulen Refleksi", link: "" },
-              { label: "Rencana Lanjutan", link: "" }
-            ]
+            bukti: "dokumen/litnum/bukti-refleksi.pdf",
+            produk: ""
           }
         ]
       }
