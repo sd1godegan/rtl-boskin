@@ -1,24 +1,60 @@
-/* =====================================================================
-   DATA RTL — SD Negeri 1 Godegan
-   ---------------------------------------------------------------------
-   Semua file PDF disimpan di GitHub (folder dokumen/ dan slides/).
+/**
+ * RTL Data — SD Negeri 1 Godegan
+ * Best Practice Bimtek BOSP Kinerja Terbaik 2026
+ * -----------------------------------------------------------------
+ * Semua file PDF di-host di GitHub Pages (folder `slides/` & `dokumen/`).
+ *
+ * Cara isi:
+ *   - Path relatif  →  "dokumen/digitalisasi/bukti-sosialisasi.pdf"
+ *   - URL eksternal →  "https://sd1godegan.github.io/mpi"
+ *   - Kosongkan ("") kalau belum ada → tombol jadi disabled.
+ *
+ * @typedef {Object} RtlItem
+ * @property {string} title
+ * @property {string} detail
+ * @property {string} waktu
+ * @property {string} sasaran
+ * @property {string} pj
+ * @property {string} output
+ * @property {string} [code]   - Penanda (a., b., dsb.)
+ * @property {string} [bukti]  - Path PDF bundel bukti
+ * @property {string} [produk] - Path PDF produk atau URL eksternal
+ *
+ * @typedef {Object} RtlSection
+ * @property {string} number
+ * @property {string} title
+ * @property {RtlItem[]} items
+ *
+ * @typedef {Object} RtlDataset
+ * @property {string} title
+ * @property {string} subtitle
+ * @property {string} accent
+ * @property {string} slide
+ * @property {RtlSection[]} sections
+ */
 
-   Isi bukti/produk dengan PATH RELATIF:
-     "dokumen/digitalisasi/bukti-sosialisasi.pdf"
+"use strict";
 
-   Untuk link web (misal Portal MPI), isi URL lengkap:
-     "https://sd1godegan.github.io/mpi"
+/**
+ * Rekursif freeze — mencegah mutasi data secara tidak sengaja.
+ * @template T
+ * @param {T} value
+ * @returns {T}
+ */
+function deepFreeze(value) {
+  if (value && typeof value === "object" && !Object.isFrozen(value)) {
+    Object.freeze(value);
+    Object.values(value).forEach(deepFreeze);
+  }
+  return value;
+}
 
-   Viewer otomatis:
-     - Path .pdf → modal preview
-     - URL web  → buka tab baru
+/* ============================================================
+   DATA
+   ============================================================ */
+const RTL_DATA = deepFreeze({
 
-   Kosongkan ("") kalau belum ada → tombol jadi "Belum tersedia".
-   ===================================================================== */
-
-const RTL_DATA = {
-
-  /* ================= 01. DIGITALISASI PEMBELAJARAN ================= */
+  /* ==================== 01. DIGITALISASI ==================== */
   digitalisasi: {
     title: "Digitalisasi Pembelajaran",
     subtitle: "Best Practice RTL Bimtek BOSP Kinerja Terbaik 2026 — SD Negeri 1 Godegan",
@@ -30,7 +66,6 @@ const RTL_DATA = {
         title: "Sosialisasi",
         items: [
           {
-            code: "",
             title: "Sosialisasi Materi Bimtek Digitalisasi Pembelajaran",
             detail: "Menyampaikan kembali materi bimtek kepada warga sekolah tentang cara belajar di era digital, penggunaan perangkat digital, pembuatan media pembelajaran interaktif, pemanfaatan Ruang Murid, dan penyusunan RPP berbasis TPACK.",
             waktu: "Jumat, 25 September 2026",
@@ -75,7 +110,6 @@ const RTL_DATA = {
         title: "Implementasi",
         items: [
           {
-            code: "",
             title: "Praktik Pembelajaran dengan MPI",
             detail: "Guru mencoba menggunakan MPI di kelas, sambil diamati dan didokumentasikan.",
             waktu: "Selasa, 29 September 2026",
@@ -92,7 +126,6 @@ const RTL_DATA = {
         title: "Refleksi",
         items: [
           {
-            code: "",
             title: "Diskusi Refleksi",
             detail: "Berdiskusi bersama untuk menilai apa yang sudah berjalan, apa kendalanya, dan apa yang perlu diperbaiki ke depan.",
             waktu: "Rabu, 30 September 2026",
@@ -107,7 +140,7 @@ const RTL_DATA = {
     ]
   },
 
-  /* ================= 02. TATA KELOLA SEKOLAH (SPMI) ================= */
+  /* ==================== 02. TATA KELOLA ==================== */
   tatakelola: {
     title: "Tata Kelola Sekolah (SPMI)",
     subtitle: "Best Practice RTL Bimtek BOSP Kinerja Terbaik 2026 — SD Negeri 1 Godegan",
@@ -119,7 +152,6 @@ const RTL_DATA = {
         title: "Sosialisasi",
         items: [
           {
-            code: "",
             title: "IHT Sistem Penjaminan Mutu Pendidikan",
             detail: "In House Training untuk seluruh warga sekolah tentang konsep dan penerapan SPMI di satuan pendidikan.",
             waktu: "22 September 2026",
@@ -136,7 +168,6 @@ const RTL_DATA = {
         title: "Perencanaan",
         items: [
           {
-            code: "",
             title: "Workshop Perencanaan Berbasis Data",
             detail: "Menyusun perencanaan sekolah berdasarkan data rapor pendidikan dan evaluasi diri sekolah.",
             waktu: "23 September 2026",
@@ -181,7 +212,6 @@ const RTL_DATA = {
         title: "Refleksi",
         items: [
           {
-            code: "",
             title: "Diskusi Refleksi Keberhasilan dan Kesulitan Pembelajaran",
             detail: "Guru mendiskusikan keberhasilan dan kesulitan dalam kegiatan rancangan aktivitas pembelajaran dan peer teaching.",
             waktu: "25 September 2026",
@@ -196,7 +226,7 @@ const RTL_DATA = {
     ]
   },
 
-  /* ================= 03. LITERASI & NUMERASI ================= */
+  /* ==================== 03. LITERASI & NUMERASI ==================== */
   litnum: {
     title: "Literasi & Numerasi",
     subtitle: "Best Practice RTL Bimtek BOSP Kinerja Terbaik 2026 — SD Negeri 1 Godegan",
@@ -208,7 +238,6 @@ const RTL_DATA = {
         title: "Sosialisasi",
         items: [
           {
-            code: "",
             title: "Diskusi Bersama: Membaca Rapor Pendidikan Sekolah",
             detail: "Mendiseminasikan materi bimtek BOS Kinerja. Guru memahami kondisi nyata sekolah dari data Rapor Pendidikan 2025, mengenali 3 prioritas utama (numerasi geometri, literasi teks sastra, karakter kreativitas–nalar kritis), dan memahami konsep dasar literasi-numerasi (L1–L3, miskonsepsi litnum).",
             waktu: "Kamis, 8 Oktober 2026",
@@ -225,7 +254,6 @@ const RTL_DATA = {
         title: "Workshop Program Literasi Numerasi",
         items: [
           {
-            code: "",
             title: "Merancang Pembelajaran Litnum Berbasis Kokurikuler",
             detail: "Guru menyusun LKPD dan soal bertahap L1 → L2 → L3, menyiapkan pembelajaran yang mengaktifkan penalaran kritis & kreativitas murid, serta memilih strategi penguatan (lingkungan kaya teks, diskusi bermakna, pembelajaran kontekstual).",
             waktu: "Jumat, 9 Okt & Senin, 12 Okt 2026",
@@ -242,7 +270,6 @@ const RTL_DATA = {
         title: "Implementasi",
         items: [
           {
-            code: "",
             title: "Praktik Mengajar (Uji Coba di Kelas)",
             detail: "Guru menerapkan pembelajaran literasi-numerasi yang sudah dirancang. Murid berlatih menalar (numerasi) dan mengevaluasi teks (literasi) melalui masalah nyata. Sekolah mulai mengintegrasikan ke kokurikuler \"Cerdas Literasi & Cerdas Numerasi\" (Selasa–Rabu, 07.00–07.35).",
             waktu: "Selasa, 13 & Rabu, 14 Oktober 2026",
@@ -259,7 +286,6 @@ const RTL_DATA = {
         title: "Refleksi",
         items: [
           {
-            code: "",
             title: "Diskusi Evaluasi Program Penguatan Litnum",
             detail: "Guru berbagi pengalaman berhasil dan sulit, menilai apakah pembelajaran sudah melatih L1–L3 serta menumbuhkan kreativitas–nalar kritis, lalu menyusun langkah lanjutan melalui intrakurikuler, kokurikuler, dan pembiasaan.",
             waktu: "Kamis, 15 Oktober 2026",
@@ -274,4 +300,4 @@ const RTL_DATA = {
     ]
   }
 
-};
+});
