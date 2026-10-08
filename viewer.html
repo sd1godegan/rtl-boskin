@@ -10,20 +10,14 @@
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
-  /* ============================================================
-     FIX ANTI-GARIS — hilangkan border/outline/scrollbar tak diinginkan
-     ============================================================ */
-
-  /* Reset total button & link */
+  /* ====== FIX ANTI-GARIS ====== */
   button, a {
     border: 0 !important;
     outline: 0 !important;
     background-clip: padding-box;
     -webkit-appearance: none;
-    -moz-appearance: none;
     appearance: none;
     -webkit-tap-highlight-color: transparent;
-    -webkit-touch-callout: none;
   }
   button:focus, a:focus,
   button:active, a:active {
@@ -35,22 +29,13 @@
     outline-offset: 3px;
     border-radius: 9px;
   }
-
-  /* Scrollbar dihilangkan dari semua elemen */
   *::-webkit-scrollbar {
     width: 0 !important;
     height: 0 !important;
     display: none !important;
-    background: transparent !important;
   }
-  html {
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-  }
+  html { scrollbar-width: none; -ms-overflow-style: none; }
 
-  /* ============================================================
-     VARIABEL
-     ============================================================ */
   :root {
     --accent: #2563eb;
     --accent-soft: #dbeafe;
@@ -90,9 +75,6 @@
     z-index: 40;
     transition: opacity 0.35s, transform 0.35s;
     box-shadow: 0 2px 10px -6px rgba(15,23,42,0.12);
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
-    will-change: transform, opacity;
     isolation: isolate;
   }
   header.hidden {
@@ -161,18 +143,11 @@
   }
   .header-btn:hover { background: var(--accent-soft); color: var(--accent); }
   .header-btn svg { width: 14px; height: 14px; flex-shrink: 0; }
-  .header-btn.disabled {
-    opacity: 0.45;
-    cursor: not-allowed;
-    pointer-events: none;
-  }
+  .header-btn.disabled { opacity: 0.45; cursor: not-allowed; pointer-events: none; }
 
   #fs-btn { display: none; }
   body[data-tab="slide"] #fs-btn { display: inline-flex; }
-  #fs-btn.active {
-    background: var(--accent-soft);
-    color: var(--accent);
-  }
+  #fs-btn.active { background: var(--accent-soft); color: var(--accent); }
 
   /* ===== TABS ===== */
   .tabs {
@@ -189,9 +164,6 @@
     padding: 0 20px;
     z-index: 35;
     transition: opacity 0.35s, transform 0.35s;
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
-    will-change: transform, opacity;
     isolation: isolate;
   }
   .tabs.hidden {
@@ -199,7 +171,6 @@
     transform: translateY(-100%);
     pointer-events: none;
     border-bottom-color: transparent !important;
-    box-shadow: none !important;
   }
 
   .tab {
@@ -218,21 +189,14 @@
   }
   .tab svg { width: 15px; height: 15px; }
   .tab:hover { background: var(--soft); color: var(--text); }
-  .tab.active {
-    background: var(--accent-soft);
-    color: var(--accent);
-  }
+  .tab.active { background: var(--accent-soft); color: var(--accent); }
 
   /* ===== PANEL ===== */
   .panel { display: none; }
   .panel.active { display: block; }
 
   /* ---- SLIDE PANEL ---- */
-  #panel-slide {
-    position: fixed;
-    inset: 0;
-    z-index: 5;
-  }
+  #panel-slide { position: fixed; inset: 0; z-index: 5; }
   #stage {
     position: absolute;
     inset: 0;
@@ -250,33 +214,19 @@
     box-shadow: 0 6px 28px rgba(15,23,42,0.18);
     background: #fff;
     border-radius: 3px;
-    transition: border-radius 0.2s;
     border: 0 !important;
     outline: 0 !important;
     -webkit-transform: translateZ(0);
     transform: translateZ(0);
     backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
   }
 
-  /* Fullscreen state */
-  body.is-fullscreen {
-    background: #000 !important;
-  }
-  body.is-fullscreen #stage {
-    padding-top: 0;
-    background: #000;
-  }
-  body.is-fullscreen canvas {
-    border-radius: 0;
-    box-shadow: none;
-  }
+  body.is-fullscreen { background: #000 !important; }
+  body.is-fullscreen #stage { padding-top: 0; background: #000; }
+  body.is-fullscreen canvas { border-radius: 0; box-shadow: none; }
   body.is-fullscreen header,
-  body.is-fullscreen .tabs {
-    display: none;
-  }
+  body.is-fullscreen .tabs { display: none; }
 
-  /* Nav buttons */
   .nav-btn {
     position: fixed;
     top: calc(var(--header-h) + var(--tabs-h));
@@ -313,13 +263,11 @@
   body.is-fullscreen .nav-btn:hover:not(:disabled) { color: #fff; }
   .nav-btn:disabled { opacity: 0.15; cursor: default; }
 
-  /* Auto-hide UI */
   body.ui-hidden .nav-btn { opacity: 0; pointer-events: none; }
   body.ui-hidden #page-indicator { opacity: 0; pointer-events: none; }
   body.ui-hidden header { opacity: 0; transform: translateY(-100%); pointer-events: none; }
   body.ui-hidden .tabs { opacity: 0; transform: translateY(-100%); pointer-events: none; }
 
-  /* Page indicator */
   #page-indicator {
     position: fixed;
     bottom: 22px;
@@ -358,7 +306,6 @@
   #error { color: #dc2626; }
   body.is-fullscreen #loading,
   body.is-fullscreen #error { color: #fff; }
-
   .spinner {
     width: 34px; height: 34px;
     border: 3px solid #cbd5e1;
@@ -377,7 +324,6 @@
     min-height: 100vh;
   }
   .rtl-wrap { max-width: 1100px; margin: 0 auto; }
-
   .rtl-page-head { text-align: center; margin-bottom: 30px; }
   .rtl-page-head h2 {
     font-size: clamp(22px, 3vh, 28px);
@@ -404,7 +350,6 @@
     margin-bottom: 20px;
     box-shadow: 0 4px 16px -10px rgba(15,23,42,0.12);
   }
-
   .rtl-section-head {
     display: flex;
     align-items: center;
@@ -462,7 +407,6 @@
     font-size: 12px;
     font-weight: 800;
     flex-shrink: 0;
-    letter-spacing: 0.3px;
   }
   .rtl-item-title {
     font-size: 15px;
@@ -472,7 +416,6 @@
     letter-spacing: -0.015em;
     flex: 1;
   }
-
   .rtl-item-detail {
     font-size: 13px;
     color: var(--muted);
@@ -534,9 +477,11 @@
     padding: 8px 13px;
     border-radius: 9px;
     text-decoration: none;
+    cursor: pointer;
     transition: filter 0.2s, transform 0.15s;
     letter-spacing: 0.1px;
     box-shadow: 0 3px 8px -3px var(--accent);
+    font-family: inherit;
   }
   .file-chip:hover { filter: brightness(0.92); }
   .file-chip:active { transform: scale(0.97); }
@@ -550,6 +495,190 @@
     box-shadow: none;
     font-weight: 600;
   }
+
+  .file-chip.produk-chip {
+    background: #f59e0b;
+    box-shadow: 0 3px 8px -3px #f59e0b;
+  }
+  .file-chip.produk-chip:hover { filter: brightness(0.92); }
+
+  .file-chip.produk-link {
+    background: #ec4899;
+    box-shadow: 0 3px 8px -3px #ec4899;
+  }
+  .file-chip.produk-link:hover { filter: brightness(0.92); }
+
+  /* ============================================================
+     MODAL PREVIEW
+     ============================================================ */
+  .modal {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+  .modal.active { display: flex; }
+
+  .modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.72);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    animation: fadeIn 0.2s ease;
+  }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+  .modal-content {
+    position: relative;
+    background: var(--card);
+    border-radius: 18px;
+    box-shadow: 0 24px 60px -20px rgba(15,23,42,0.5);
+    width: 100%;
+    max-width: 980px;
+    height: 88vh;
+    max-height: 800px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    animation: popIn 0.25s cubic-bezier(.2,.8,.2,1);
+  }
+  @keyframes popIn {
+    from { opacity: 0; transform: scale(0.96) translateY(10px); }
+    to   { opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  .modal-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 18px 22px;
+    border-bottom: 1px solid var(--line);
+    flex-shrink: 0;
+    background: var(--card);
+  }
+  .modal-icon {
+    width: 40px; height: 40px;
+    border-radius: 10px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .modal-icon svg { width: 20px; height: 20px; }
+  .modal-title-wrap { flex: 1; min-width: 0; }
+  .modal-title {
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--text);
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .modal-subtitle {
+    font-size: 11.5px;
+    color: var(--muted);
+    font-weight: 500;
+    margin-top: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .modal-close {
+    width: 38px; height: 38px;
+    border-radius: 9px;
+    background: var(--soft);
+    color: var(--text);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    font-weight: 400;
+    line-height: 1;
+    transition: background 0.2s, color 0.2s;
+    flex-shrink: 0;
+    font-family: inherit;
+  }
+  .modal-close:hover { background: #fee2e2; color: #dc2626; }
+
+  .modal-body {
+    flex: 1;
+    min-height: 0;
+    background: var(--soft);
+    position: relative;
+  }
+  .modal-body iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: block;
+    background: #fff;
+  }
+
+  .modal-loading {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 12px;
+    background: var(--soft);
+    font-size: 13px;
+    color: var(--muted);
+    font-weight: 500;
+    transition: opacity 0.3s;
+  }
+  .modal-loading.hide { opacity: 0; pointer-events: none; }
+
+  .modal-footer {
+    padding: 14px 22px;
+    border-top: 1px solid var(--line);
+    background: var(--card);
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    flex-shrink: 0;
+    flex-wrap: wrap;
+  }
+  .modal-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 10px 16px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+    transition: filter 0.2s, background 0.2s, color 0.2s, transform 0.15s;
+    font-family: inherit;
+    white-space: nowrap;
+    letter-spacing: 0.1px;
+  }
+  .modal-btn:active { transform: scale(0.97); }
+  .modal-btn svg { width: 15px; height: 15px; flex-shrink: 0; }
+
+  .modal-btn.primary {
+    background: var(--accent);
+    color: #fff;
+    box-shadow: 0 4px 12px -4px var(--accent);
+  }
+  .modal-btn.primary:hover { filter: brightness(0.92); }
+
+  .modal-btn.secondary {
+    background: var(--soft);
+    color: var(--text);
+  }
+  .modal-btn.secondary:hover { background: var(--accent-soft); color: var(--accent); }
 
   /* ===== MOBILE ===== */
   @media (max-width: 600px) {
@@ -579,6 +708,16 @@
     .rtl-item-detail { font-size: 12.5px; margin-bottom: 14px; }
     .rtl-meta { grid-template-columns: 1fr; gap: 12px; padding: 14px 0; }
     .rtl-meta-value { font-size: 12.5px; }
+
+    .modal { padding: 0; }
+    .modal-content { border-radius: 0; height: 100vh; max-height: none; }
+    .modal-header { padding: 14px 16px; }
+    .modal-icon { width: 36px; height: 36px; }
+    .modal-icon svg { width: 18px; height: 18px; }
+    .modal-title { font-size: 14px; }
+    .modal-close { width: 34px; height: 34px; font-size: 20px; }
+    .modal-footer { padding: 12px 16px; gap: 8px; }
+    .modal-btn { padding: 9px 13px; font-size: 12px; flex: 1; justify-content: center; }
   }
 </style>
 </head>
@@ -605,11 +744,11 @@
       </svg>
       <span class="label">Layar Penuh</span>
     </button>
-    <a id="download-link" class="header-btn" href="#">
+    <a id="download-link" class="header-btn" href="#" download>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/>
       </svg>
-      <span class="label" id="dl-label">Unduh</span>
+      <span class="label">Unduh Slide</span>
     </a>
   </div>
 </header>
@@ -650,11 +789,57 @@
   <div class="rtl-wrap">
     <div class="rtl-page-head">
       <h2 id="rtl-title">Rencana Tindak Lanjut</h2>
-      <p id="rtl-subtitle">Struktur kegiatan RTL — klik tombol unduh di setiap item untuk mengakses produk pendukung.</p>
+      <p id="rtl-subtitle">Klik tombol Bukti atau Produk untuk melihat pratinjau, atau unduh langsung.</p>
     </div>
     <div id="rtl-body"></div>
   </div>
 </section>
+
+<!-- ============ MODAL PREVIEW ============ -->
+<div class="modal" id="preview-modal" role="dialog" aria-modal="true" aria-hidden="true">
+  <div class="modal-backdrop" data-close></div>
+  <div class="modal-content">
+    <div class="modal-header">
+      <div class="modal-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+          <path d="M14 2v6h6"/>
+          <path d="M8 13h8M8 17h5"/>
+        </svg>
+      </div>
+      <div class="modal-title-wrap">
+        <div class="modal-title" id="modal-title">Preview</div>
+        <div class="modal-subtitle" id="modal-subtitle">Dokumen</div>
+      </div>
+      <button class="modal-close" data-close aria-label="Tutup">×</button>
+    </div>
+
+    <div class="modal-body">
+      <div class="modal-loading" id="modal-loading">
+        <div class="spinner"></div>
+        Memuat pratinjau…
+      </div>
+      <iframe id="modal-iframe" src="" style="display:none;"></iframe>
+    </div>
+
+    <div class="modal-footer">
+      <a class="modal-btn secondary" id="modal-open" href="#" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M15 3h6v6"/>
+          <path d="M10 14 21 3"/>
+          <path d="M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5"/>
+        </svg>
+        Buka di Tab Baru
+      </a>
+      <a class="modal-btn primary" id="modal-download" href="#" download>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/>
+        </svg>
+        Unduh
+      </a>
+    </div>
+  </div>
+</div>
 
 <script src="data.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
@@ -663,27 +848,13 @@
     'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
   /* ============================================================
-     KONVERSI LINK DRIVE → TAUTAN UNDUHAN LANGSUNG
+     DETEKSI JENIS FILE
      ============================================================ */
-  function toDirectDownloadUrl(url) {
-    if (!url || !url.trim()) return '';
-    const input = url.trim();
-
-    if (input.includes('uc?export=download')) return input;
-
-    let fileId = '';
-    let m = input.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
-    if (m) fileId = m[1];
-
-    if (!fileId) {
-      m = input.match(/[?&]id=([a-zA-Z0-9_-]+)/);
-      if (m) fileId = m[1];
-    }
-
-    if (!fileId && /^[a-zA-Z0-9_-]{20,}$/.test(input)) fileId = input;
-    if (!fileId) return input;
-
-    return `https://drive.google.com/uc?export=download&id=${fileId}`;
+  function isLocalPdf(url) {
+    if (!url) return false;
+    const s = url.trim().toLowerCase();
+    // Path relatif atau URL yang berakhiran .pdf
+    return s.endsWith('.pdf') || s.includes('.pdf?') || s.includes('.pdf#');
   }
 
   /* ============================================================
@@ -715,7 +886,6 @@
   const nextBtn    = document.getElementById('next-btn');
   const fileNameEl = document.getElementById('file-name');
   const dlLink     = document.getElementById('download-link');
-  const dlLabel    = document.getElementById('dl-label');
   const header     = document.getElementById('header');
   const tabs       = document.getElementById('tabs');
   const rtlBody    = document.getElementById('rtl-body');
@@ -723,6 +893,15 @@
   const rtlSubtitle= document.getElementById('rtl-subtitle');
   const fsBtn      = document.getElementById('fs-btn');
   const fsIcon     = document.getElementById('fs-icon');
+
+  // Modal
+  const modal         = document.getElementById('preview-modal');
+  const modalTitle    = document.getElementById('modal-title');
+  const modalSubtitle = document.getElementById('modal-subtitle');
+  const modalIframe   = document.getElementById('modal-iframe');
+  const modalLoading  = document.getElementById('modal-loading');
+  const modalDownload = document.getElementById('modal-download');
+  const modalOpen     = document.getElementById('modal-open');
 
   let pdfDoc = null, pageNum = 1, rendering = false, pendingPage = null;
   let currentTab = 'slide';
@@ -732,17 +911,15 @@
     loading.style.display = 'none';
     errorEl.style.display = 'block';
     errorEl.textContent = 'Data RTL tidak ditemukan. Kembali ke halaman utama.';
-    dlLink.classList.add('disabled');
   } else {
     document.documentElement.style.setProperty('--accent', data.accent);
     document.documentElement.style.setProperty('--accent-soft', hexToSoft(data.accent));
 
     fileNameEl.textContent = data.title;
     rtlTitle.textContent = 'RTL — ' + data.title;
-    rtlSubtitle.textContent = data.subtitle;
+    rtlSubtitle.textContent = 'Klik tombol Bukti atau Produk untuk melihat pratinjau, atau unduh langsung.';
 
     renderRTL();
-    updateDownloadButton();
     loadPdf(data.slide);
   }
 
@@ -753,35 +930,6 @@
     const b = parseInt(h.substr(4,2),16);
     const mix = (c) => Math.round(c * 0.12 + 255 * 0.88);
     return `rgb(${mix(r)}, ${mix(g)}, ${mix(b)})`;
-  }
-
-  /* ============================================================
-     TOMBOL UNDUH KONTEKSTUAL
-     ============================================================ */
-  function updateDownloadButton() {
-    if (!data) return;
-
-    if (currentTab === 'slide') {
-      dlLink.classList.remove('disabled');
-      dlLink.href = data.slide;
-      dlLink.setAttribute('download', data.slide.split('/').pop());
-      dlLink.removeAttribute('target');
-      dlLabel.textContent = 'Unduh Slide';
-    } else {
-      if (data.rtl_doc && data.rtl_doc.trim()) {
-        dlLink.classList.remove('disabled');
-        dlLink.href = toDirectDownloadUrl(data.rtl_doc);
-        dlLink.setAttribute('target', '_blank');
-        dlLink.removeAttribute('download');
-        dlLabel.textContent = 'Unduh RTL';
-      } else {
-        dlLink.classList.add('disabled');
-        dlLink.href = '#';
-        dlLink.removeAttribute('target');
-        dlLink.removeAttribute('download');
-        dlLabel.textContent = 'RTL Belum Tersedia';
-      }
-    }
   }
 
   /* ============================================================
@@ -807,26 +955,56 @@
       ? `<span class="rtl-item-code">${esc(item.code)}</span>`
       : '';
 
-    const filesHtml = (item.files || []).map(f => {
-      const ready = f.link && f.link.trim();
-      if (ready) {
-        const directUrl = toDirectDownloadUrl(f.link);
-        return `
-          <a class="file-chip" href="${esc(directUrl)}" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/>
+    /* ---- BUKTI ---- */
+    const buktiHtml = item.bukti && item.bukti.trim()
+      ? `<button type="button" class="file-chip"
+                 data-file-link="${esc(item.bukti)}"
+                 data-file-label="Bukti ${esc(item.title)}"
+                 data-item-title="${esc(item.title)}">
+           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+             <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+             <circle cx="12" cy="12" r="3"/>
+           </svg>
+           Bukti
+         </button>`
+      : `<span class="file-chip disabled">
+           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+             <circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/>
+           </svg>
+           Bukti
+         </span>`;
+
+    /* ---- PRODUK ---- */
+    let produkHtml = '';
+    if (item.produk && item.produk.trim()) {
+      if (isLocalPdf(item.produk)) {
+        // PDF lokal → tombol modal
+        produkHtml = `
+          <button type="button" class="file-chip produk-chip"
+                  data-file-link="${esc(item.produk)}"
+                  data-file-label="Produk ${esc(item.title)}"
+                  data-item-title="${esc(item.title)}">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <path d="M14 2v6h6"/>
+              <path d="M8 13h8M8 17h5"/>
             </svg>
-            ${esc(f.label)}
+            Produk
+          </button>`;
+      } else {
+        // Link web (MPI) → langsung buka tab baru
+        produkHtml = `
+          <a class="file-chip produk-chip produk-link"
+             href="${esc(item.produk)}"
+             target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+              <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+            </svg>
+            Produk
           </a>`;
       }
-      return `
-        <span class="file-chip disabled">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/>
-          </svg>
-          ${esc(f.label)}
-        </span>`;
-    }).join('');
+    }
 
     return `
       <div class="rtl-item">
@@ -856,8 +1034,9 @@
         </div>
 
         <div class="rtl-files">
-          <span class="rtl-files-label">Unduh Produk:</span>
-          ${filesHtml}
+          <span class="rtl-files-label">Dokumen:</span>
+          ${buktiHtml}
+          ${produkHtml}
         </div>
       </div>
     `;
@@ -868,6 +1047,70 @@
       '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
     }[c]));
   }
+
+  /* ============================================================
+     MODAL PREVIEW
+     ============================================================ */
+  function openModal(fileLink, fileLabel, itemTitle) {
+    modalTitle.textContent = fileLabel || 'Dokumen';
+    modalSubtitle.textContent = itemTitle || '';
+
+    modalIframe.style.display = 'block';
+    modalIframe.src = fileLink;
+
+    modalDownload.href = fileLink;
+    modalDownload.setAttribute('download', fileLink.split('/').pop());
+    modalOpen.href = fileLink;
+
+    modalLoading.style.display = 'flex';
+    modalLoading.classList.remove('hide');
+
+    // Sembunyikan loading setelah iframe termuat
+    modalIframe.onload = () => {
+      setTimeout(() => {
+        modalLoading.classList.add('hide');
+        setTimeout(() => { modalLoading.style.display = 'none'; }, 300);
+      }, 300);
+    };
+    // Fallback: jika 5 detik belum load
+    setTimeout(() => {
+      if (!modalLoading.classList.contains('hide')) {
+        modalLoading.classList.add('hide');
+        setTimeout(() => { modalLoading.style.display = 'none'; }, 300);
+      }
+    }, 5000);
+
+    modal.classList.add('active');
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    modal.classList.remove('active');
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    setTimeout(() => {
+      modalIframe.src = '';
+      modalIframe.style.display = 'none';
+    }, 250);
+  }
+
+  document.addEventListener('click', (e) => {
+    const chip = e.target.closest('.file-chip:not(.disabled)');
+    if (chip) {
+      // Hanya tombol (button) yang buka modal.
+      // Link <a> biarkan browser buka tab baru.
+      if (chip.tagName !== 'BUTTON') return;
+      e.preventDefault();
+      openModal(chip.dataset.fileLink, chip.dataset.fileLabel, chip.dataset.itemTitle);
+      return;
+    }
+    if (e.target.closest('[data-close]')) closeModal();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal.classList.contains('active')) closeModal();
+  });
 
   /* ============================================================
      TAB SWITCHING
@@ -886,8 +1129,6 @@
       p.classList.toggle('active', p.id === 'panel-' + target);
     });
 
-    updateDownloadButton();
-
     clearTimeout(hideTimer);
     document.body.classList.remove('ui-hidden');
     header.classList.remove('hidden');
@@ -904,6 +1145,7 @@
      ============================================================ */
   function showUI() {
     if (currentTab !== 'slide') return;
+    if (modal.classList.contains('active')) return;
     document.body.classList.remove('ui-hidden');
     header.classList.remove('hidden');
     tabs.classList.remove('hidden');
@@ -911,14 +1153,13 @@
     const delay = document.fullscreenElement ? 2000 : 3000;
     hideTimer = setTimeout(hideUI, delay);
   }
-
   function hideUI() {
     if (currentTab !== 'slide') return;
+    if (modal.classList.contains('active')) return;
     document.body.classList.add('ui-hidden');
     header.classList.add('hidden');
     tabs.classList.add('hidden');
   }
-
   ['mousemove','mousedown','touchstart','keydown','scroll','wheel']
     .forEach(ev => document.addEventListener(ev, showUI, { passive: true }));
 
@@ -935,7 +1176,6 @@
       if (fn) fn.call(document);
     }
   }
-
   fsBtn.addEventListener('click', toggleFullscreen);
 
   function onFsChange() {
@@ -965,7 +1205,6 @@
       clearTimeout(hideTimer);
       hideTimer = setTimeout(hideUI, 3000);
     }
-
     setTimeout(() => { if (pdfDoc) renderPage(pageNum); }, 120);
   }
 
@@ -1001,20 +1240,15 @@
     try {
       const page = await pdfDoc.getPage(num);
       const base = page.getViewport({ scale: 1 });
-
       const isMobile = window.innerWidth < 700;
       const isFs = document.body.classList.contains('is-fullscreen');
-
       const padding = isFs ? 0 : (isMobile ? 14 : 36);
       const headerH = isFs ? 0 : (isMobile ? 54 : 58);
       const tabsH   = isFs ? 0 : (isMobile ? 48 : 52);
-
       const maxW = window.innerWidth  - padding * 2;
       const maxH = window.innerHeight - padding * 2 - headerH - tabsH;
-
       const scale = Math.min(maxW / base.width, maxH / base.height);
       const viewport = page.getViewport({ scale });
-
       const dpr = window.devicePixelRatio || 1;
       canvas.width  = Math.floor(viewport.width  * dpr);
       canvas.height = Math.floor(viewport.height * dpr);
@@ -1022,9 +1256,7 @@
       canvas.style.height = Math.floor(viewport.height) + 'px';
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       ctx.clearRect(0, 0, viewport.width, viewport.height);
-
       await page.render({ canvasContext: ctx, viewport }).promise;
-
       pageCur.textContent = num;
       prevBtn.disabled = num <= 1;
       nextBtn.disabled = num >= pdfDoc.numPages;
@@ -1046,14 +1278,12 @@
 
   document.addEventListener('keydown', (e) => {
     if (currentTab !== 'slide') return;
+    if (modal.classList.contains('active')) return;
     if (e.key === 'ArrowLeft'  || e.key === 'PageUp')   goPrev();
     if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') goNext();
     if (e.key === 'f' || e.key === 'F') toggleFullscreen();
   });
 
-  /* ============================================================
-     RESIZE & SWIPE
-     ============================================================ */
   let resizeTimer;
   window.addEventListener('resize', () => {
     clearTimeout(resizeTimer);
@@ -1065,11 +1295,13 @@
   let tx=0, ty=0;
   document.addEventListener('touchstart', e => {
     if (currentTab !== 'slide') return;
+    if (modal.classList.contains('active')) return;
     tx = e.changedTouches[0].screenX;
     ty = e.changedTouches[0].screenY;
   }, { passive: true });
   document.addEventListener('touchend', e => {
     if (currentTab !== 'slide') return;
+    if (modal.classList.contains('active')) return;
     const dx = e.changedTouches[0].screenX - tx;
     const dy = e.changedTouches[0].screenY - ty;
     if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy)) {
