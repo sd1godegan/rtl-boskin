@@ -256,22 +256,22 @@ const RTL_DATA = deepFreeze({
           {
             code: "a.",
             title: "Workshop LKPD Literasi Teks Sastra Berjenjang L1–L3",
-            detail: "Membahas pedoman AI penyusunan LKPD literasi, penanganan miskonsepsi literasi (literasi teks sastra adalah tanggung jawab semua guru, bukan hanya guru Bahasa Indonesia, melalui pemahaman isi cerita yang mendalam), dan penataan Lingkungan Kaya Teks (Sudut Baca Kelas berjenjang, Dinding Kata/Word Wall, label fungsional, dan display hasil karya murid). Membagi kelompok kerja guru berdasarkan fase dan menyusun LKPD Literasi Teks Sastra berjenjang L1–L3 untuk semua kelas I–VI: Fase A (Kelas I–II) teks sastra pendek 2 paragraf, 8–12 kalimat tunggal ber-line break, font 14pt, proporsi L1 40%/L2 40%/L3 20%; Fase B (Kelas III–IV) cerita rakyat/fiksi mengalir 3 paragraf, 12–15 kalimat majemuk sederhana, font 12pt, proporsi L1 30%/L2 45%/L3 25%; Fase C (Kelas V–VI) cerita rakyat/sastra kompleks 4 paragraf, 16–20 kalimat majemuk kompleks, font 11pt, proporsi L1 25%/L2 40%/L3 35%. Praktik generate prompt AI untuk memproduksi teks sastra sesuai prioritas Rapor Pendidikan (mis. dongeng \"Rani Rajin\" untuk Fase A, cerita rakyat \"Timun Mas\"/\"Semut dan Merpati\" untuk Fase B, \"Malin Kundang\" untuk Fase C) dan menyiapkan prompt gambar adegan cerita. Diakhiri reviu, verifikasi pasca-generate, dan peer review keterbacaan teks, kecukupan baris jawaban uraian, serta kesesuaian soal L1/L2/L3 dengan indikator Rapor Pendidikan.",
+            detail: "Membahas pedoman AI penyusunan LKPD literasi, penanganan miskonsepsi literasi. Menyusun LKPD Literasi Teks Sastra berjenjang L1–L3 untuk semua kelas I–VI. Praktik generate prompt AI untuk memproduksi teks sastra sesuai prioritas Rapor Pendidikan  dan menyiapkan prompt gambar adegan cerita. Diakhiri reviu, verifikasi pasca-generate, dan peer review keterbacaan teks, kecukupan baris jawaban uraian, serta kesesuaian soal L1/L2/L3 dengan indikator Rapor Pendidikan.",
             waktu: "Jumat, 9 Oktober 2026",
             sasaran: "Seluruh Guru Kelas (I–VI) dan Guru Mata Pelajaran",
             pj: "Wahyuningrum Pratiwi, S.Pd.",
-            output: "Set File HTML LKPD Literasi Teks Sastra untuk seluruh kelas I–VI (Fase A, B, C) dan dokumen pemetaan kebutuhan media lingkungan kaya teks per kelas.",
+            output: "LKPD Literasi Teks Sastra untuk seluruh kelas I–VI (Fase A, B, C)",
             bukti: "dokumen/litnum/bukti-workshop-literasi.pdf",
             produk: "dokumen/litnum/produk-lkpd-literasi.pdf"
           },
           {
             code: "b.",
             title: "Workshop LKPD Numerasi Geometri Berjenjang L1–L3",
-            detail: "Membahas pedoman AI penyusunan LKPD numerasi dengan fokus domain Geometri dan Pengukuran, penanganan miskonsepsi numerasi (numerasi bukan sekadar berhitung cepat atau menghafal rumus, melainkan kemampuan bernalar menggunakan konsep matematika dalam situasi kehidupan nyata), dan penataan Lingkungan Kaya Numerasi (alat pengukur tinggi badan, denah bernumerasi, sudut alat peraga baku & tak baku, serta label ukuran benda di dalam kelas). Membagi kelompok kerja guru berdasarkan fase dan menyusun LKPD Numerasi Geometri berjenjang L1–L3 untuk semua kelas I–VI: Fase A (Kelas I–II) pengenalan bentuk bangun datar/ruang dan pengukuran benda konkret sekitar kelas, proporsi L1 40%/L2 40%/L3 20%; Fase B (Kelas III–IV) keliling dan luas bangun datar berbasis data tabel atau diagram sederhana, proporsi L1 30%/L2 45%/L3 25%; Fase C (Kelas V–VI) geometri kompleks (denah, skala, dan penataan ruang efisien), proporsi L1 25%/L2 40%/L3 35%. Praktik generate prompt AI untuk LKPD numerasi geometri kontekstual (pengukuran benda sekitar kelas untuk Fase A, keliling/luas halaman sekolah untuk Fase B, perancangan denah tata letak ruang untuk Fase C) dengan kotak pengerjaan berstruktur (Diketahui, Ditanya, Penyelesaian, Kesimpulan) serta gambar visual pendukung. Diakhiri reviu dan verifikasi pasca-generate melalui peer review kelogisan angka, kejelasan petunjuk soal, serta kesesuaian soal L1/L2/L3 dengan indikator Rapor Pendidikan.",
+            detail: "Membahas pedoman AI penyusunan LKPD numerasi dengan fokus domain Geometri dan Pengukuran, penanganan miskonsepsi numerasi, menyusun LKPD Numerasi Geometri berjenjang L1–L3 untuk semua kelas I–VI. Praktik generate prompt AI untuk LKPD numerasi geometri kontekstual dengan kotak pengerjaan berstruktur (Diketahui, Ditanya, Penyelesaian, Kesimpulan) serta gambar visual pendukung. Diakhiri reviu dan verifikasi pasca-generate melalui peer review kelogisan angka, kejelasan petunjuk soal, serta kesesuaian soal L1/L2/L3 dengan indikator Rapor Pendidikan.",
             waktu: "Senin, 12 Oktober 2026",
             sasaran: "Seluruh Guru Kelas (I–VI) dan Guru Mata Pelajaran",
             pj: "Wahyuningrum Pratiwi, S.Pd.",
-            output: "Set LKPD Numerasi Geometri untuk seluruh kelas I–VI (Fase A, B, C) dan dokumen pemetaan kebutuhan alat peraga serta media lingkungan kaya numerasi per kelas.",
+            output: "LKPD Numerasi Geometri untuk seluruh kelas I–VI (Fase A, B, C)",
             bukti: "dokumen/litnum/bukti-workshop-numerasi.pdf",
             produk: "dokumen/litnum/produk-lkpd-numerasi.pdf"
           }
@@ -288,7 +288,7 @@ const RTL_DATA = deepFreeze({
             waktu: "Selasa, 13 Oktober 2026",
             sasaran: "Seluruh Guru Kelas (I–VI) dan Siswa",
             pj: "Seluruh Guru Kelas",
-            output: "Hasil pengerjaan LKPD Literasi Teks Sastra mandiri seluruh siswa kelas I–VI, rekapitulasi nilai dan peta pencapaian level kognitif literasi siswa per kelas, serta foto dokumentasi kegiatan pengerjaan LKPD literasi di masing-masing kelas.",
+            output: "Hasil pengerjaan LKPD Literasi Teks Sastra mandiri seluruh siswa kelas I–VI, rekapitulasi nilai dan peta pencapaian level kognitif, serta foto dokumentasi kegiatan pengerjaan LKPD literasi di masing-masing kelas.",
             bukti: "dokumen/litnum/bukti-implementasi-literasi.pdf",
             produk: ""
           },
@@ -299,7 +299,7 @@ const RTL_DATA = deepFreeze({
             waktu: "Rabu, 14 Oktober 2026",
             sasaran: "Seluruh Guru Kelas (I–VI) dan Siswa",
             pj: "Seluruh Guru Kelas",
-            output: "Hasil pengerjaan LKPD Numerasi Geometri mandiri seluruh siswa kelas I–VI, rekapitulasi nilai dan peta pencapaian level kognitif numerasi siswa per kelas, serta foto dokumentasi kegiatan pengerjaan LKPD numerasi di masing-masing kelas.",
+            output: "Hasil pengerjaan LKPD Numerasi Geometri mandiri seluruh siswa kelas I–VI, rekapitulasi nilai dan peta pencapaian level kognitif, serta foto dokumentasi kegiatan pengerjaan LKPD numerasi di masing-masing kelas.",
             bukti: "dokumen/litnum/bukti-implementasi-numerasi.pdf",
             produk: ""
           }
