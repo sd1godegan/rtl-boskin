@@ -67,7 +67,7 @@ const RTL_DATA = deepFreeze({
         items: [
           {
             title: "Sosialisasi Materi Bimtek Digitalisasi Pembelajaran",
-            detail: "Menyampaikan kembali materi bimtek kepada warga sekolah tentang cara belajar di era digital, penggunaan perangkat digital, pembuatan media pembelajaran interaktif, pemanfaatan Ruang Murid, dan penyusunan RPP berbasis TPACK.",
+            detail: "Diseminasi materi bimtek kepada warga sekolah: cara belajar di era digital, penggunaan perangkat digital, pembuatan media pembelajaran interaktif, pemanfaatan Ruang Murid, dan penyusunan RPP berbasis TPACK.",
             waktu: "Jumat, 25 September 2026",
             sasaran: "Guru, Kepala Sekolah, dan Tenaga Kependidikan",
             pj: "Ardika Riski Rahmawan, S.Pd.",
@@ -84,7 +84,7 @@ const RTL_DATA = deepFreeze({
           {
             code: "a.",
             title: "Pembuatan Media Pembelajaran Interaktif (MPI)",
-            detail: "Praktik membuat MPI dengan memanfaatkan PID, laptop, Ruang Murid, DeepSeek AI, atau aplikasi digital lainnya.",
+            detail: "Praktik membuat MPI memanfaatkan PID, laptop, Ruang Murid, DeepSeek AI, atau aplikasi digital lainnya.",
             waktu: "Senin, 28 September 2026",
             sasaran: "Guru",
             pj: "Ardika Riski Rahmawan, S.Pd.",
@@ -95,7 +95,7 @@ const RTL_DATA = deepFreeze({
           {
             code: "b.",
             title: "Pembuatan RPP Berbasis TPACK",
-            detail: "Menyusun RPP yang memuat tujuan pembelajaran, langkah kegiatan, media digital, dan penilaian yang sesuai untuk penguatan literasi dan numerasi.",
+            detail: "Menyusun RPP memuat tujuan pembelajaran, langkah kegiatan, media digital, dan penilaian untuk penguatan literasi dan numerasi.",
             waktu: "Senin, 28 September 2026",
             sasaran: "Guru",
             pj: "Ardika Riski Rahmawan, S.Pd.",
@@ -239,8 +239,7 @@ const RTL_DATA = deepFreeze({
         items: [
           {
             title: "Sosialisasi Bimtek Literasi Numerasi",
-            detail: "Mendiseminasikan hasil Bimtek BOSP Kinerja Terbaik 2026. Guru mempelajari konsep dasar literasi dan numerasi , serta pembagian level proses kognitif L1, L2, dan L3 . Bedah Rapor Pendidikan 2025: Literasi 100% Baik dengan sub-indikator terendah A.1.2 Teks Sastra (81,19) dan A.1.5 Penalaran L3 (63,53); Numerasi 88,23% Baik dengan sub-indikator terendah A.2.3 Geometri (55,58) dan A.2.7 Penalaran L3 (56,62); serta indikator Karakter pada pemenuhan pembelajaran yang memfasilitasi murid bereksplorasi, bernalar kritis, dan memecahkan masalah secara mandiri. 
-              Menetapkan 3 prioritas utama: (1) Numerasi Geometri; (2) Literasi Teks Sastra; (3) Karakter Nalar Kritis & Kreativitas. Integrasi RTL dalam program kokurikuler "Cerdas Literasi & Cerdas Numerasi" setiap hari Selasa dan Rabu pukul 07.00–07.35 WIB serta penyusunan instrumen LKPD terstandar berfokus teks sastra, geometri, dan soal berjenjang L1–L3.",
+            detail: "Diseminasi hasil Bimtek BOSP Kinerja Terbaik 2026 dan pembagian level kognitif L1–L3. Bedah Rapor Pendidikan 2025: Literasi 100% Baik (terendah: Teks Sastra 81,19; Penalaran L3 63,53); Numerasi 88,23% Baik (terendah: Geometri 55,58; Penalaran L3 56,62); Karakter pada pembelajaran eksploratif, bernalar kritis, dan mandiri. Prioritas RTL: (1) Numerasi Geometri, (2) Literasi Teks Sastra, (3) Karakter Nalar Kritis & Kreativitas. Integrasi dalam kokurikuler \"Cerdas Literasi & Cerdas Numerasi\" (Selasa & Rabu, 07.00–07.35 WIB) dan penyusunan LKPD terstandar berjenjang L1–L3.",
             waktu: "Kamis, 8 Oktober 2026",
             sasaran: "Kepala Sekolah, Seluruh Guru Kelas, Guru Mata Pelajaran, dan Tenaga Kependidikan",
             pj: "Wahyuningrum Pratiwi, S.Pd.",
@@ -257,7 +256,7 @@ const RTL_DATA = deepFreeze({
           {
             code: "a.",
             title: "Workshop LKPD Literasi Teks Sastra Berjenjang L1–L3",
-            detail: "Membahas pedoman AI penyusunan LKPD literasi, penanganan miskonsepsi literasi. Menyusun LKPD Literasi Teks Sastra berjenjang L1–L3 untuk semua kelas I–VI. Praktik generate prompt AI untuk memproduksi teks sastra sesuai prioritas Rapor Pendidikan  dan menyiapkan prompt gambar adegan cerita. Diakhiri reviu, verifikasi pasca-generate, dan peer review keterbacaan teks, kecukupan baris jawaban uraian, serta kesesuaian soal L1/L2/L3 dengan indikator Rapor Pendidikan.",
+            detail: "Menyusun LKPD Literasi Teks Sastra berjenjang L1–L3 untuk kelas I–VI. Mencakup pedoman AI, penanganan miskonsepsi, praktik generate prompt teks sastra & gambar adegan, reviu pasca-generate, dan peer review keterbacaan serta kesesuaian soal L1–L3 dengan indikator Rapor Pendidikan.",
             waktu: "Jumat, 9 Oktober 2026",
             sasaran: "Seluruh Guru Kelas (I–VI) dan Guru Mata Pelajaran",
             pj: "Wahyuningrum Pratiwi, S.Pd.",
@@ -268,7 +267,7 @@ const RTL_DATA = deepFreeze({
           {
             code: "b.",
             title: "Workshop LKPD Numerasi Geometri Berjenjang L1–L3",
-            detail: "Membahas pedoman AI penyusunan LKPD numerasi dengan fokus domain Geometri dan Pengukuran, penanganan miskonsepsi numerasi, menyusun LKPD Numerasi Geometri berjenjang L1–L3 untuk semua kelas I–VI. Praktik generate prompt AI untuk LKPD numerasi geometri kontekstual dengan kotak pengerjaan berstruktur (Diketahui, Ditanya, Penyelesaian, Kesimpulan) serta gambar visual pendukung. Diakhiri reviu dan verifikasi pasca-generate melalui peer review kelogisan angka, kejelasan petunjuk soal, serta kesesuaian soal L1/L2/L3 dengan indikator Rapor Pendidikan.",
+            detail: "Menyusun LKPD Numerasi Geometri berjenjang L1–L3 untuk kelas I–VI. Mencakup pedoman AI, penanganan miskonsepsi, praktik generate prompt soal kontekstual dengan kotak berstruktur (Diketahui, Ditanya, Penyelesaian, Kesimpulan) dan gambar visual, reviu pasca-generate, serta peer review kelogisan angka dan kesesuaian soal L1–L3 dengan indikator Rapor Pendidikan.",
             waktu: "Senin, 12 Oktober 2026",
             sasaran: "Seluruh Guru Kelas (I–VI) dan Guru Mata Pelajaran",
             pj: "Wahyuningrum Pratiwi, S.Pd.",
@@ -285,7 +284,7 @@ const RTL_DATA = deepFreeze({
           {
             code: "a.",
             title: "Kokurikuler \"Cerdas Literasi\" & Pengerjaan LKPD Literasi Mandiri",
-            detail: "Pelaksanaan kokurikuler pagi \"Cerdas Literasi\" pukul 07.00–07.35 WIB. Seluruh siswa memasuki kelas masing-masing tepat waktu, pengkondisian suasana belajar literasi yang kondusif, dan guru kelas membagikan perangkat LKPD Literasi Teks Sastra yang telah disusun pada hari sebelumnya. Siswa mengerjakan LKPD secara mandiri: Fase A (Kelas I–II) membaca teks sastra pendek bergambar lalu menjawab pertanyaan berjenjang L1 (menemukan informasi eksplisit) hingga L3 (pendapat sederhana tentang pesan moral cerita); Fase B (Kelas III–IV) membaca teks cerita rakyat/fiksi dan mengerjakan pemahaman alur, penokohan (L1–L2), serta evaluasi tindakan tokoh (L3); Fase C (Kelas V–VI) membaca teks sastra kompleks dan menyelesaikan soal penalaran mandiri, menganalisis konflik cerita, serta merefleksikan nilai-nilai moral dalam kehidupan sehari-hari (L3). Guru mendampingi proses pengerjaan tanpa mengintervensi jawaban siswa, lalu mengumpulkan seluruh lembar LKPD untuk diperiksa dan dinilai menggunakan rubrik penilaian yang telah disiapkan.",
+            detail: "Kokurikuler pagi \"Cerdas Literasi\" pukul 07.00–07.35 WIB. Siswa mengerjakan LKPD Teks Sastra secara mandiri sesuai fase: Fase A (I–II) teks pendek bergambar L1–L3; Fase B (III–IV) cerita rakyat/fiksi, alur dan penokohan L1–L2 serta evaluasi tindakan tokoh L3; Fase C (V–VI) teks kompleks, analisis konflik, dan refleksi nilai moral L3. Guru mendampingi tanpa mengintervensi, lalu menilai dengan rubrik yang disiapkan.",
             waktu: "Selasa, 13 Oktober 2026",
             sasaran: "Seluruh Guru Kelas (I–VI) dan Siswa",
             pj: "Seluruh Guru Kelas",
@@ -296,7 +295,7 @@ const RTL_DATA = deepFreeze({
           {
             code: "b.",
             title: "Kokurikuler \"Cerdas Numerasi\" & Pengerjaan LKPD Numerasi Mandiri",
-            detail: "Pelaksanaan kokurikuler pagi \"Cerdas Numerasi\" pukul 07.00–07.35 WIB. Seluruh siswa mengawali kegiatan di kelas masing-masing tepat waktu, pengkondisian pembelajaran numerasi secara tertib, dan guru kelas membagikan LKPD Numerasi Geometri yang telah dirancang pada hari sebelumnya. Siswa mengerjakan LKPD secara mandiri: Fase A (Kelas I–II) mengamati bentuk bangun datar/ruang di dalam kelas, mengukur objek nyata menggunakan alat ukur baku maupun tak baku, lalu menuliskan hasilnya (L1–L3); Fase B (Kelas III–IV) mengerjakan soal keliling dan luas bangun datar berbasis data visual/tabel menggunakan pola pengerjaan berstruktur (Diketahui, Ditanya, Penyelesaian, Jawaban) (L1–L3); Fase C (Kelas V–VI) menyelesaikan masalah numerasi kontekstual mengenai denah dan tata letak ruang efisien serta mendeduksi perhitungan matematika non-rutin pada kotak kerja LKPD (L1–L3). Guru memantau dan mendampingi jalannya pengerjaan untuk memastikan kemandirian serta keteraturan siswa, kemudian mengumpulkan lembar kerja untuk diperiksa dan dinilai mengacu pada kisi-kisi serta pedoman penskoran yang telah disiapkan.",
+            detail: "Kokurikuler pagi \"Cerdas Numerasi\" pukul 07.00–07.35 WIB. Siswa mengerjakan LKPD Numerasi Geometri secara mandiri sesuai fase: Fase A (I–II) mengenal bangun datar/ruang dan mengukur objek nyata L1–L3; Fase B (III–IV) keliling & luas bangun datar dari data visual/tabel dengan pola Diketahui–Ditanya–Penyelesaian–Jawaban; Fase C (V–VI) soal kontekstual denah & tata ruang efisien serta penalaran non-rutin. Guru memantau kemandirian, lalu menilai mengacu kisi-kisi dan pedoman penskoran.",
             waktu: "Rabu, 14 Oktober 2026",
             sasaran: "Seluruh Guru Kelas (I–VI) dan Siswa",
             pj: "Seluruh Guru Kelas",
@@ -312,7 +311,7 @@ const RTL_DATA = deepFreeze({
         items: [
           {
             title: "Evaluasi & Refleksi Program Penguatan Literasi Numerasi",
-            detail: "Kepala Sekolah dan guru mengevaluasi hasil pengerjaan LKPD Literasi dan Numerasi mandiri yang telah diselesaikan siswa di seluruh kelas. Guru melaporkan bahwa pembiasaan kokurikuler pagi \"Cerdas Literasi & Cerdas Numerasi\" (Selasa & Rabu) membangun antusiasme belajar siswa tanpa mengganggu jam intrakurikuler, dan penggunaan LKPD berjenjang (L1–L3) berbasis Rapor Pendidikan berhasil memicu daya nalar kritis serta pemecahan masalah siswa di kelas. Diskusi reflektif guru membahas keberhasilan dan kendala: kendala yang teridentifikasi adalah sebagian siswa kelas awal yang lambat membaca mengalami kesulitan saat mengerjakan soal L2/L3; solusi yang disepakati adalah penerapan pendekatan Teaching at the Right Level (TaRL) serta pendampingan khusus melalui tutor sebaya dan remedial. Kegiatan ditutup dengan analisis ketercapaian target RTL dan evaluasi output kegiatan.",
+            detail: "Evaluasi hasil LKPD Literasi & Numerasi seluruh kelas. Pembiasaan kokurikuler pagi (Selasa & Rabu) membangun antusiasme tanpa mengganggu intrakurikuler, dan LKPD berjenjang L1–L3 memicu nalar kritis serta pemecahan masalah. Kendala: sebagian siswa kelas awal lambat membaca sulit pada soal L2/L3. Solusi: pendekatan TaRL, tutor sebaya, dan remedial. Ditutup dengan analisis ketercapaian target RTL dan evaluasi output.",
             waktu: "Rabu, 14 Oktober 2026",
             sasaran: "Kepala Sekolah, Seluruh Guru Kelas (I–VI), Guru Mata Pelajaran, dan Tenaga Kependidikan",
             pj: "Jumaryati, S.Pd. (Kepala Sekolah)",
